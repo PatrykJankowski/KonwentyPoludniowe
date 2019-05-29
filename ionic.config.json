@@ -1,6 +1,8 @@
 {
   "name": "konwenty",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular",
   "id": "e7b8c4c0"
 }

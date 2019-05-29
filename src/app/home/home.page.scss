@@ -1,0 +1,25 @@
+.event-thumb {
+  width: 100%;
+  align-self: center;
+}
+
+.event-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.event-category, .event-title {
+  width: 100%;
+}
+
+.card-content-md {
+  -webkit-padding-start: 5px;
+  padding-inline-start: 5px;
+  -webkit-padding-end: 5px;
+  padding-inline-end: 5px;
+  padding: 0 5px 0 5px;
+}
+
+.date {
+  font-size: 12px;
+}

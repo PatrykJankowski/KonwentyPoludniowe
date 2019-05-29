@@ -1,0 +1,41 @@
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-title>
+      <img alt="Konwenty Południowe" height="40" src="assets/logo.png" >
+    </ion-title>
+  </ion-toolbar>
+  <ion-searchbar [formControl]="searchField"></ion-searchbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="text-center">
+    <p class="lead" *ngIf="loading">Loading...</p>
+  </div>
+
+  <ion-card *ngFor="let event of events$ | async">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col size="5">
+            <ion-thumbnail class="event-thumb">
+              <img src="{{ event.image }}">
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col>
+            <ion-row text-center>
+              <h2 class="event-title">{{ event.name }}</h2>
+            </ion-row>
+            <ion-row text-center>
+              <p class="event-category">{{ event.event_type }}</p>
+            </ion-row>
+            <ion-row justify-content-end>
+              <data class="date">{{ event.date_begin }}</data>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
