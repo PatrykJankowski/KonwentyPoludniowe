@@ -11,6 +11,7 @@ import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './services/data.service';
 import { AppComponent } from './app.component';
+import  {ResolverService } from './services/resolver.service';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { AppComponent } from './app.component';
     StatusBar,
     SplashScreen,
     DataService,
+    ResolverService,
     UserAgent,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

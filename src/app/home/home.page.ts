@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs';
-import {debounceTime, distinctUntilChanged, map, switchMap, tap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 
-import { DataService } from '../services/data.service';
 import { IEvents } from '../models/events.model';
 
 @Component({
@@ -18,17 +18,32 @@ export class HomePage implements OnInit {
   private events$: Observable<IEvents[]>;
   private searchField: FormControl;
 
-  constructor(private events: DataService) {}
+  private data: any;
+
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
+    this.data = this.route.data.pipe(map(response => response.events));
     this.searchField = new FormControl();
+
+    this.filterData('');
 
     this.events$ = this.searchField.valueChanges.pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        tap(() => (this.loading = true)),
-        switchMap(term => this.events.getData(term)),
-        tap(() => (this.loading = false))
+        // tap(() => (this.loading = true)),
+        switchMap(term => this.filterData(term)),
+        // tap(() => (this.loading = false))
+    );
+  }
+
+  filterData(term: string): Observable<IEvents[]> {
+    return this.data.pipe(
+        map((events: IEvents[]) => events
+            .filter(event => {
+              return (event.name.toLowerCase().indexOf(term.toLowerCase()) > -1 || event.event_type.toLowerCase().indexOf(term.toLowerCase()) > -1 ? event : null);
+            })
+        )
     );
   }
 }

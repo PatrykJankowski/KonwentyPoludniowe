@@ -11,18 +11,25 @@ import { IEvents } from '../models/events.model';
 })
 export class DataService {
 
+  private response: any;
+
   constructor(private http: HttpClient) {}
 
-  getData(term: string): Observable<IEvents[]> {
+  getData(): Observable<any> {
 
       const apiURL = 'https://konwenty-poludniowe.pl/events_app.php';
 
-      return this.http.get(apiURL).pipe(
-        map((events: IEvents[]) => events
-            /*.filter(event => {
-                return (event.name.toLowerCase().indexOf(term.toLowerCase()) > -1 || event.event_type.toLowerCase().indexOf(term.toLowerCase()) > -1 ? event : null);
-            })*/
-        )
+      return this.response = this.http.get(apiURL);
+  }
+
+    getFilteredData(term: string): Observable<IEvents[]> {
+        return this.response.pipe(
+            map((events: IEvents[]) => events
+                .filter(event => {
+                    return (event.name.toLowerCase().indexOf(term.toLowerCase()) > -1 || event.event_type.toLowerCase().indexOf(term.toLowerCase()) > -1 ? event : null);
+                })
+            )
     );
   }
+
 }
