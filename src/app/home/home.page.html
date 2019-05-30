@@ -3,34 +3,49 @@
     <ion-title>
       <img alt="Konwenty Południowe" height="40" src="assets/logo.png" >
     </ion-title>
+    <ion-item>
+      <ion-label>Kategoria</ion-label>
+      <ion-select value="brown" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="categoryFilter">
+        <ion-select-option value="manga">Manga</ion-select-option>
+        <ion-select-option value="larp">LARP</ion-select-option>
+        <ion-select-option value="black">Black</ion-select-option>
+        <ion-select-option value="red">Red</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Data</ion-label>
+      <ion-select value="brown" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="dateFilter">
+        <ion-select-option value="03">03</ion-select-option>
+      </ion-select>
+    </ion-item>
   </ion-toolbar>
   <ion-searchbar [formControl]="searchField"></ion-searchbar>
 </ion-header>
 
 <ion-content>
 
-  <div class="text-center">
+<!--  <div class="text-center">
     <p class="lead" *ngIf="loading">Loading...</p>
-  </div>
+  </div>-->
 
-  <ion-card *ngFor="let event of events$ | async">
+  <ion-card *ngFor="let item of items">
     <ion-card-content>
       <ion-grid>
         <ion-row align-items-center>
           <ion-col size="5">
             <ion-thumbnail class="event-thumb">
-              <img src="{{ event.image }}">
+              <img src="{{ item.image }}">
             </ion-thumbnail>
           </ion-col>
           <ion-col>
             <ion-row text-center>
-              <h2 class="event-title">{{ event.name }}</h2>
+              <h2 class="event-title">{{ item.name }}</h2>
             </ion-row>
             <ion-row text-center>
-              <p class="event-category">{{ event.event_type }}</p>
+              <p class="event-category">{{ item.event_type }}</p>
             </ion-row>
             <ion-row justify-content-end>
-              <data class="date">{{ event.date_begin }}</data>
+              <data class="date">{{ item.date_begin }}</data>
             </ion-row>
           </ion-col>
         </ion-row>
