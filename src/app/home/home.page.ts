@@ -6,6 +6,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { DataService } from '../services/data.service';
 import {IEvents} from '../models/events.model';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -18,56 +19,105 @@ export class HomePage implements OnInit {
   private items: any;
   private searchField: FormControl;
   private categoryFilter: FormControl;
+  private locationFilter: FormControl;
   private dateFilter: FormControl;
-  private searchTermTmp: IEvents;
 
+  private searchingTerm = '';
   private category = '';
+  private location = '';
   private date = '';
+
+  private categories = [];
+  private locations = [];
 
   // private searching: any = false;
   // private loading = false;
 
+  customPickerOptions: any;
 
   constructor(private route: ActivatedRoute, public dataService: DataService) {}
 
   ngOnInit() {
     this.events = this.route.snapshot.data.events;
-    this.setFilteredItems(this.category, this.date);
+
+    this.setFilters();
+    this.setFilteredItems(this.category, this.location, this.date);
+
+
+
+
+/*    this.customPickerOptions = {
+      buttons: [
+        {
+          text: 'Potwierdź',
+          handler: () => console.log('Clicked Save!')
+        },
+        {
+        text: 'Anuluj',
+        handler: () => {
+          return false;
+        }
+      }]
+    };*/
+
+
+
 
     this.searchField = new FormControl();
     this.categoryFilter = new FormControl();
+    this.locationFilter = new FormControl();
     this.dateFilter = new FormControl();
 
     this.searchField.valueChanges.pipe(debounceTime(100)).subscribe(search => {
       // this.searching = false;
-      this.setFilteredItems(this.category, this.date);
+      this.searchingTerm = search;
+      this.setSearchededItems(this.searchingTerm);
     });
 
     this.categoryFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
       this.category = search;
       this.events = this.route.snapshot.data.events;
-      this.events = this.dataService.filterByCategory(this.events, this.category, this.date);
-      this.items = this.events;
-      this.setFilteredItems(this.category, this.date);
+      this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
+      this.setFilteredItems(this.category, this.location, this.date);
+      this.setSearchededItems(this.searchingTerm);
     });
 
+    this.locationFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
+      this.location = search;
+      this.events = this.route.snapshot.data.events;
+      this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
+      this.setFilteredItems(this.category, this.location, this.date);
+      this.setSearchededItems(this.searchingTerm);
+    });
 
     this.dateFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
-      this.date = search;
+      this.date = formatDate(search, 'yyyy-MM-dd', 'pl');
+      console.log(this.date);
       this.events = this.route.snapshot.data.events;
-      this.events = this.dataService.filterByCategory(this.events, this.category, this.date);
-      this.items = this.events;
-      // this.setFilteredItems(this.searchTermTmp);
+      this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
+      this.setFilteredItems(this.category, this.location, this.date);
+      this.setSearchededItems(this.searchingTerm);
     });
-
 
   }
 
-  setFilteredItems(category, date) {
-    this.items = this.dataService.filterByCategory(this.events, category, date);
+  setFilters() {
+    for (let i = 0; i < this.events.length; i++) {
+      const category = this.events[i].event_type;
+      const location = this.events[i].location;
+      if (this.categories.indexOf(category) === -1) { this.categories.push(category); }
+      if (this.locations.indexOf(location) === -1) { this.locations.push(location); }
+    }
+  }
+
+  setFilteredItems(category, location, date) {
+    this.items = this.dataService.filterEvents(this.events, category, location, date);
     // this.searchTermTmp = searchTerm;
   }
 
+  setSearchededItems(search) {
+    this.items = this.dataService.searchEvents(this.events, search);
+  }
 
   /*onSearchInput() {
       this.searching = true;

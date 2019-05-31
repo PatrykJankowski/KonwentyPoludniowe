@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localePl from '@angular/common/locales/pl';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -11,8 +13,9 @@ import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { DataService } from './services/data.service';
 import { AppComponent } from './app.component';
-import  {ResolverService } from './services/resolver.service';
+import { ResolverService } from './services/resolver.service';
 
+registerLocaleData(localePl);
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +27,8 @@ import  {ResolverService } from './services/resolver.service';
     DataService,
     ResolverService,
     UserAgent,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    { provide: LOCALE_ID, useValue: 'pl' }
   ],
   bootstrap: [AppComponent]
 })

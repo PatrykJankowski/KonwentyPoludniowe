@@ -3,21 +3,44 @@
     <ion-title>
       <img alt="Konwenty Południowe" height="40" src="assets/logo.png" >
     </ion-title>
-    <ion-item>
-      <ion-label>Kategoria</ion-label>
-      <ion-select value="brown" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="categoryFilter">
-        <ion-select-option value="manga">Manga</ion-select-option>
-        <ion-select-option value="larp">LARP</ion-select-option>
-        <ion-select-option value="black">Black</ion-select-option>
-        <ion-select-option value="red">Red</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>Data</ion-label>
-      <ion-select value="brown" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="dateFilter">
-        <ion-select-option value="03">03</ion-select-option>
-      </ion-select>
-    </ion-item>
+    <ion-grid>
+      <ion-row>
+
+        <ion-col size="4">
+          <ion-item>
+            <div class="filter-wrapper">
+              <ion-label>Kategoria</ion-label>
+              <ion-select ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="categoryFilter">
+                <ion-select-option value="" selected>Wszystkie</ion-select-option>
+                <ion-select-option *ngFor="let category of categories" value="{{ category }}">{{ category }}</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-item>
+            <div class="filter-wrapper">
+              <ion-label>Miasto</ion-label>
+              <ion-select ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="locationFilter">
+                <ion-select-option selected>Wszystkie</ion-select-option>
+                <ion-select-option *ngFor="let location of locations" value="{{ location }}">{{ location }}</ion-select-option>
+              </ion-select>
+            </div>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="4">
+          <ion-item>
+            <div class="filter-wrapper">
+              <ion-label>Data</ion-label>
+              <ion-datetime value="" display-format="YYYY-MM-DD" [pickerOptions]="customPickerOptions" [formControl]="dateFilter"></ion-datetime>
+            </div>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
   </ion-toolbar>
   <ion-searchbar [formControl]="searchField"></ion-searchbar>
 </ion-header>
@@ -43,6 +66,9 @@
             </ion-row>
             <ion-row text-center>
               <p class="event-category">{{ item.event_type }}</p>
+            </ion-row>
+            <ion-row text-center>
+              <p class="event-location">{{ item.location }}</p>
             </ion-row>
             <ion-row justify-content-end>
               <data class="date">{{ item.date_begin }}</data>

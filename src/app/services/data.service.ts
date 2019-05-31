@@ -17,17 +17,19 @@ export class DataService {
       this.events = this.getData();
     }
 
-    filterItems(data, searchTerm) {
-        return data.filter((event: IEvents) => {
-            return (event.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1 ||
-                event.event_type.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1);
+    filterEvents(events, category, location, date) {
+        return events.filter((event: IEvents) => {
+            return (event.event_type.toLowerCase().indexOf(category.toLowerCase()) > -1 &&
+                    event.location.toLowerCase().indexOf(location.toLowerCase()) > -1 &&
+                    event.date_begin.toLowerCase().indexOf(date.toLowerCase()) > -1);
         });
     }
 
-    filterByCategory(events, category, date) {
+    searchEvents(events, search) {
         return events.filter((event: IEvents) => {
-            return (event.event_type.toLowerCase().indexOf(category.toLowerCase()) > -1 &&
-                event.date_begin.toLowerCase().indexOf(date.toLowerCase()) > -1);
+            return (event.name.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    event.event_type.toLowerCase().indexOf(search.toLowerCase()) > -1 ||
+                    event.location.toLowerCase().indexOf(search.toLowerCase()) > -1);
         });
     }
 
