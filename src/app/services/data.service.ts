@@ -21,7 +21,7 @@ export class DataService {
         return events.filter((event: IEvents) => {
             return (event.event_type.toLowerCase().indexOf(category.toLowerCase()) > -1 &&
                     event.location.toLowerCase().indexOf(location.toLowerCase()) > -1 &&
-                    event.date_begin.toLowerCase().indexOf(date.toLowerCase()) > -1);
+                    event.date_begin.toLowerCase().includes(date.toLowerCase()) === true);
         });
     }
 

@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
+import { DatePipe, formatDate } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-
 import { DataService } from '../services/data.service';
-import {IEvents} from '../models/events.model';
-import {formatDate} from '@angular/common';
+import { IEvents} from '../models/events.model';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +23,7 @@ export class HomePage implements OnInit {
   private searchingTerm = '';
   private category = '';
   private location = '';
-  private date = '';
+  private date = this.datePipe.transform(new Date(), 'yyyy-MM');
 
   private categories = [];
   private locations = [];
@@ -35,7 +33,7 @@ export class HomePage implements OnInit {
 
   customPickerOptions: any;
 
-  constructor(private route: ActivatedRoute, public dataService: DataService) {}
+  constructor(private route: ActivatedRoute, public dataService: DataService, public datePipe: DatePipe) {}
 
   ngOnInit() {
     this.events = this.route.snapshot.data.events;
@@ -43,38 +41,32 @@ export class HomePage implements OnInit {
     this.setFilters();
     this.setFilteredItems(this.category, this.location, this.date);
 
-
-
-
-/*    this.customPickerOptions = {
-      buttons: [
-        {
-          text: 'Potwierdź',
-          handler: () => console.log('Clicked Save!')
-        },
-        {
-        text: 'Anuluj',
-        handler: () => {
-          return false;
-        }
-      }]
-    };*/
-
-
-
+        /*    this.customPickerOptions = {
+              buttons: [
+                {
+                  text: 'Potwierdź',
+                  handler: () => console.log('Clicked Save!')
+                },
+                {
+                text: 'Anuluj',
+                handler: () => {
+                  return false;
+                }
+              }]
+            };*/
 
     this.searchField = new FormControl();
     this.categoryFilter = new FormControl();
     this.locationFilter = new FormControl();
     this.dateFilter = new FormControl();
 
-    this.searchField.valueChanges.pipe(debounceTime(100)).subscribe(search => {
+    this.searchField.valueChanges.subscribe(search => {
       // this.searching = false;
       this.searchingTerm = search;
       this.setSearchededItems(this.searchingTerm);
     });
 
-    this.categoryFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
+    this.categoryFilter.valueChanges.subscribe(search => {
       this.category = search;
       this.events = this.route.snapshot.data.events;
       this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
@@ -82,7 +74,7 @@ export class HomePage implements OnInit {
       this.setSearchededItems(this.searchingTerm);
     });
 
-    this.locationFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
+    this.locationFilter.valueChanges.subscribe(search => {
       this.location = search;
       this.events = this.route.snapshot.data.events;
       this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
@@ -90,16 +82,14 @@ export class HomePage implements OnInit {
       this.setSearchededItems(this.searchingTerm);
     });
 
-    this.dateFilter.valueChanges.pipe(debounceTime(100)).subscribe(search => {
-      this.date = formatDate(search, 'yyyy-MM-dd', 'pl');
-      console.log(this.date);
+    this.dateFilter.valueChanges.subscribe(search => {
+      this.date = formatDate(search, 'yyyy-MM', 'pl');
       this.events = this.route.snapshot.data.events;
       this.items = this.events = this.dataService.filterEvents(this.events, this.category, this.location, this.date);
       this.setFilteredItems(this.category, this.location, this.date);
       this.setSearchededItems(this.searchingTerm);
     });
-
-  }
+}
 
   setFilters() {
     for (let i = 0; i < this.events.length; i++) {
@@ -112,7 +102,6 @@ export class HomePage implements OnInit {
 
   setFilteredItems(category, location, date) {
     this.items = this.dataService.filterEvents(this.events, category, location, date);
-    // this.searchTermTmp = searchTerm;
   }
 
   setSearchededItems(search) {

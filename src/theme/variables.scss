@@ -1,8 +1,52 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/opensans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: semi-bold;
+  font-weight: 600;
+  src: url('../assets/fonts/opensans/OpenSans-SemiBold.ttf');
+}
+
+@font-face {
+  font-family: 'Khand';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/khand/Khand-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Khand';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../assets/fonts/khand/Khand-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Khand';
+  font-style: semi-bold;
+  font-weight: 600;
+  src: url('../assets/fonts/khand/Khand-SemiBold.ttf');
+}
+
+h1, h2, h3, h4, button {
+  font-family: "Khand", serif !important;
+}
+
+
 /** Ionic CSS Variables **/
 :root {
+
+  /** fonts **/
+  --ion-font-family: 'Open Sans', serif;
+
   /** primary **/
   --ion-color-primary: #6C5477;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -76,4 +120,6 @@
   --ion-color-light-tint: #f5f6f9;
 
   --ion-toolbar-color: var(--ion-color-primary-contrast);
+  --ion-background-color: #dad5db;
+  --ion-item-background: #fff;
 }
