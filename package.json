@@ -11,15 +11,15 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "stylelint": "stylelint \"src/**/*.scss\" || exit 0",
-    "precommit": "lint-staged",
-    "postcommit": "git update-index --again"
+/*    "precommit": "lint-staged",
+    "postcommit": "git update-index --again"*/
   },
-  "lint-staged": {
-    "src/**/*.scss": [
+/*  "lint-staged": {
+    "src*//***/*//*.scss": [
       "stylelint",
       "git add"
     ]
-  },
+  },*/
   "private": true,
   "dependencies": {
     "@angular/common": "^7.2.2",
@@ -94,9 +94,9 @@
       "browser"
     ]
   },
-  "husky": {
+/*  "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": ""
     }
-  }
+  }*/
 }
