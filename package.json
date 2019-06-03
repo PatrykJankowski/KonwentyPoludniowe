@@ -26,6 +26,7 @@
     "@ionic-native/user-agent": "^5.6.1",
     "@ionic/angular": "^4.1.0",
     "@ionic/pro": "2.0.4",
+    "angular-tslint-rules": "^1.14.0",
     "cordova-browser": "6.0.0",
     "cordova-plugin-useragent": "1.0.6",
     "cordova-useragent": "git+https://github.com/LouisT/cordova-useragent.git",
@@ -62,6 +63,8 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.4.0",
+    "stylelint": "^10.0.1",
+    "stylelint-config-recommended": "^2.2.0",
     "ts-node": "~8.1.0",
     "tslint": "~5.16.0",
     "typescript": "~3.1.6"

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve } from '@angular/router';
 
-import {DataService} from './data.service';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,5 +11,5 @@ export class ResolverService implements Resolve<any> {
 
     resolve(): any {
       return this.data.getData();
-  }
+    }
 }

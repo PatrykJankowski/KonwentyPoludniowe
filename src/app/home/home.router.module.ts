@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { HomePage } from './home.page';
 import { ResolverService } from '../services/resolver.service';
+import { HomePage } from './home.page';
 
 const routes: Routes = [
   {
@@ -11,13 +11,9 @@ const routes: Routes = [
     resolve: { events: ResolverService },
     children: [
       {
-        path: 'tab2',
-        children: [
-          {
-            path: '',
-            loadChildren: '../tab2/tab2.module#Tab2PageModule'
-          }
-        ]
+        path: '/event-details/:id'
+        // loadChildren: '../tab2/tab2.module#Tab2PageModule',
+        // resolve: { eventDetails: EventDetailsResolverService },
       }
     ]
   }
@@ -29,4 +25,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class TabsPageRoutingModule {}
+export class EventDetailsPageRoutingModule {}

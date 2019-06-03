@@ -1,18 +1,18 @@
-import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule} from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TabsPageRoutingModule } from './home.router.module';
 import { HomePage } from './home.page';
+import { EventDetailsPageRoutingModule } from './home.router.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
-    TabsPageRoutingModule,
+    EventDetailsPageRoutingModule,
     ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: HomePage }])
   ],

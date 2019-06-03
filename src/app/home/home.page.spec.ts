@@ -11,7 +11,8 @@ describe('Tab1Page', () => {
     TestBed.configureTestingModule({
       declarations: [HomePage],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    }).compileComponents();
+    })
+        .compileComponents();
   }));
 
   beforeEach(() => {

@@ -35,8 +35,8 @@
         <ion-col size="4">
           <ion-item>
             <div class="filter-wrapper">
-              <ion-label class="filter-label filter-label--date">Okres:</ion-label>
-              <ion-datetime value="2019-06" display-format="YYYY-MM" [pickerOptions]="customPickerOptions" [formControl]="dateFilter" ></ion-datetime>
+              <ion-label class="filter-label filter-label--date">Data:</ion-label>
+              <ion-datetime value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter" ></ion-datetime>
             </div>
           </ion-item>
         </ion-col>
@@ -49,31 +49,27 @@
 
 <ion-content>
 
-<!--  <div class="text-center">
-    <p class="lead" *ngIf="loading">Loading...</p>
-  </div>-->
-
-  <ion-card *ngFor="let item of items">
-    <ion-card-content>
+  <ion-card *ngFor="let event of items" [routerLink]="['/event-details', event.id]">
+    <ion-card-content class="event-card">
       <ion-grid>
         <ion-row align-items-center>
           <ion-col size="5">
-            <ion-thumbnail class="event-thumb">
-              <img src="{{ item.image }}">
+            <ion-thumbnail class="event-card__thumb">
+              <img src="{{ event.image }}" alt="Image - {{event.name}}">
             </ion-thumbnail>
           </ion-col>
           <ion-col no-padding>
             <ion-row text-center>
-              <h2 class="event-title">{{ item.name }}</h2>
+              <h2 class="event-card__title">{{ event.name }}</h2>
             </ion-row>
             <ion-row text-center>
-              <h4 class="event-category">{{ item.event_type }}</h4>
+              <h4 class="event-card__category">{{ event.event_type }}</h4>
             </ion-row>
             <ion-row text-center>
-              <h3 class="event-location">{{ item.location }}</h3>
+              <h3 class="event-card__location">{{ event.location }}</h3>
             </ion-row>
             <ion-row justify-content-end>
-              <time datetime="2017-02-14" class="event-date">{{ item.date_begin }}</time>
+              <time datetime="2017-02-14" class="event-card__date">{{ event.date_begin }}</time>
             </ion-row>
           </ion-col>
         </ion-row>
