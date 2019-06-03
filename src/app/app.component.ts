@@ -19,7 +19,7 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  setUserAgent() {
+  setUserAgent(): void {
     this.userAgent.set('SouthEvents')
       .catch((error: any) => console.error(error));
   }

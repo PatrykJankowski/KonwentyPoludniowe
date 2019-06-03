@@ -10,16 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "stylelint": "stylelint \"src/**/*.scss\" || exit 0",
-/*    "precommit": "lint-staged",
-    "postcommit": "git update-index --again"*/
+    "stylelint": "stylelint \"src/**/*.scss\" || exit 0"
   },
-/*  "lint-staged": {
-    "src*//***/*//*.scss": [
-      "stylelint",
-      "git add"
-    ]
-  },*/
   "private": true,
   "dependencies": {
     "@angular/common": "^7.2.2",
@@ -71,7 +63,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "pre-commit": "^1.2.2",
+
     "protractor": "~5.4.0",
     "stylelint": "^10.0.1",
     "stylelint-config-recommended": "^2.2.0",
@@ -93,10 +85,5 @@
     "platforms": [
       "browser"
     ]
-  },
-/*  "husky": {
-    "hooks": {
-      "pre-commit": ""
-    }
-  }*/
+  }
 }

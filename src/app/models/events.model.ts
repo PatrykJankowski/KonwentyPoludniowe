@@ -7,10 +7,7 @@ export interface Events {
     date_begin: string;
 }
 
-export interface EventDetails {
-    image: string;
-    name: string;
+export interface EventDetails extends Events {
     address: string;
     description: string;
-    date_begin: string;
 }

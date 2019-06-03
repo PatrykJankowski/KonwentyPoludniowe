@@ -14,7 +14,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventDetailsResolverService } from './event-details/event-details.resolver';
 import { DataService } from './services/data.service';
-import { ResolverService } from './services/resolver.service';
 
 registerLocaleData(localePl);
 
@@ -27,7 +26,6 @@ registerLocaleData(localePl);
     SplashScreen,
     UserAgent,
     DataService,
-    ResolverService,
     EventDetailsResolverService, // remove?
     UserAgent,
     DatePipe,

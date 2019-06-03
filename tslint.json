@@ -4,7 +4,6 @@
   ],
   "extends": ["angular-tslint-rules"],
   "rules": {
-    // override tslint rules here
     "component-class-suffix": [true, "Page", "Component"]
   }
 }

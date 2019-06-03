@@ -9,7 +9,7 @@ import { Events } from '../models/events.model';
   providedIn: 'root'
 })
 export class DataService {
-    events: Observable<Array<Events>>; // type IEvents ??
+    events: Observable<Array<Events>>;
 
     private response: any;
 
@@ -17,7 +17,7 @@ export class DataService {
         this.events = this.getData();
     }
 
-    filterEvents(events, category, location, date) {
+    filterEvents(events, category, location, date): Array<Events> {
         return events.filter((event: Events) =>
             (event.event_type.toLowerCase()
                 .indexOf(category.toLowerCase()) > -1 && event.location.toLowerCase()
@@ -25,7 +25,7 @@ export class DataService {
                 .includes(date.toLowerCase()) === true));
     }
 
-    searchEvents(events, search) {
+    searchEvents(events, search): Array<Events> {
         return events.filter((event: Events) => (
             event.name.toLowerCase()
                 .indexOf(search.toLowerCase()) > -1 ||
