@@ -6,7 +6,7 @@ import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { Platform } from '@ionic/angular';
 
 @Component({
-  selector: 'ngx-root',
+  selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
@@ -19,13 +19,17 @@ export class AppComponent {
     this.initializeApp();
   }
 
+  setUserAgent() {
+    this.userAgent.set('SouthEvents')
+      .catch((error: any) => console.error(error));
+  }
+
   initializeApp(): void {
     this.platform.ready()
       .then(() => {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.userAgent.set('SouthEvents')
-          .catch((error: any) => console.error(error));
+        this.setUserAgent();
       });
   }
 }

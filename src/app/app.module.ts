@@ -25,6 +25,7 @@ registerLocaleData(localePl);
   providers: [
     StatusBar,
     SplashScreen,
+    UserAgent,
     DataService,
     ResolverService,
     EventDetailsResolverService, // remove?

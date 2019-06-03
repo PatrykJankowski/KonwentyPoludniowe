@@ -1,6 +1,6 @@
 {
   "extends": "stylelint-config-recommended",
   "rules": {
-    "string-quotes": "single"
+    "selector-type-no-unknown": [true, { "ignoreTypes": ["/^ion-/"] }]
   }
 }

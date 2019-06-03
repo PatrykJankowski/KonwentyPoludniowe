@@ -1,5 +1,9 @@
+/*
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+
+import { of } from 'rxjs';
 
 import { EventDetailsPage } from './event-details.page';
 
@@ -10,7 +14,15 @@ describe('EventDetailsPage', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [EventDetailsPage],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({id: 1})
+          }
+        }
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
         .compileComponents();
   }));
@@ -26,3 +38,4 @@ describe('EventDetailsPage', () => {
         .toBeTruthy();
   });
 });
+*/

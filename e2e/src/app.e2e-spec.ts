@@ -9,6 +9,7 @@ describe('new App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getPageTitle()).toContain('Tab One');
+    expect(page.getPageTitle())
+      .toContain('Tab One');
   });
 });
