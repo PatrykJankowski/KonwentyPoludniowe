@@ -29,30 +29,34 @@ ion-item {
 
 }
 
-.filter-wrapper {
+.filter {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
 
+  &__arrow {
+    width: 10px;
+    height: 8px;
+    position: absolute;
+    background: white;
+    z-index: 3;
+    right: 4px;
+    bottom: 11px;
+  }
 
-.custom-placeholder {
-  color: red;
-  opacity: 1;
-}
+  &__label {
+    width: 100%;
+    --padding-start: 0;
+    --padding-end: 0;
 
-.filter-label {
-  width: 100%;
-  --padding-start: 0;
-  --padding-end: 0;
+    font-weight: 600;
+    font-size: 12px;
+  }
 
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.filter-label--date {
-  position: relative;
-  top: -2px;
+  &__label--date {
+    position: relative;
+    top: -2px;
+  }
 }
 
 
@@ -60,10 +64,6 @@ ion-searchbar {
   --background: #f6f4f7;
   --padding-start: 0;
   --min-height: 50px;
-
-}
-
-.searchbar-input {
 
 }
 
@@ -79,16 +79,6 @@ ion-datetime {
   --padding-start: 0;
 }
 
-.hide-arrow {
-  width: 10px;
-  height: 8px;
-  position: absolute;
-  background: white;
-  z-index: 3;
-  right: 4px;
-  bottom: 11px;
-}
-
 .event-card {
   -webkit-padding-start: 5px;
   padding-inline-start: 5px;
@@ -97,7 +87,6 @@ ion-datetime {
   padding: 0 5px 0 5px;
 
   &__thumb {
-    width: 100%;
     height: 60px;
     align-self: center;
   }
@@ -119,19 +108,14 @@ ion-datetime {
 
   &__date {
     font-size: 10px;
-    font-weight: 600;
-    font-family: 'Khand', serif;
+    font-weight: 700;
+    font-family: 'Open Sans', serif;
   }
 
-  &__category, &__title, &__location {
+  &__thumb, &__category, &__title, &__location {
     width: 100%;
   }
 }
-
-.date {
-  font-size: 12px;
-}
-
 
 .select .item-native {
   flex-direction: column;

@@ -19,20 +19,20 @@ export class DataService {
 
     filterEvents(events, category, location, date): Array<Events> {
         return events.filter((event: Events) =>
-            (event.event_type.toLowerCase()
-                .indexOf(category.toLowerCase()) > -1 && event.location.toLowerCase()
-                .indexOf(location.toLowerCase()) > -1 && event.date_begin.toLowerCase()
-                .includes(date.toLowerCase()) === true));
+          (event.event_type.toLowerCase()
+            .indexOf(category.toLowerCase()) > -1 && event.location.toLowerCase()
+            .indexOf(location.toLowerCase()) > -1 && event.date_begin.toLowerCase()
+            .includes(date.toLowerCase()) === true));
     }
 
     searchEvents(events, search): Array<Events> {
         return events.filter((event: Events) => (
-            event.name.toLowerCase()
-                .indexOf(search.toLowerCase()) > -1 ||
-            event.event_type.toLowerCase()
-                .indexOf(search.toLowerCase()) > -1 ||
-            event.location.toLowerCase()
-                .indexOf(search.toLowerCase()) > -1));
+          event.name.toLowerCase()
+            .indexOf(search.toLowerCase()) > -1 ||
+          event.event_type.toLowerCase()
+            .indexOf(search.toLowerCase()) > -1 ||
+          event.location.toLowerCase()
+            .indexOf(search.toLowerCase()) > -1));
     }
 
 //    filterByDate(events, category, date) {
@@ -50,7 +50,7 @@ export class DataService {
     }
 
     getDetails(id: number): Observable<any> {
-        const apiURL = 'https://konwenty-poludniowe.pl/events_app.php?id=' + id;
+        const apiURL = `https://konwenty-poludniowe.pl/events_app.php?id=${id}`;
 
         return this.response = this.http.get(apiURL);
     }

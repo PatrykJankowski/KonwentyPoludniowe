@@ -12,7 +12,6 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EventDetailsResolverService } from './event-details/event-details.resolver';
 import { DataService } from './services/data.service';
 
 registerLocaleData(localePl);
@@ -26,7 +25,6 @@ registerLocaleData(localePl);
     SplashScreen,
     UserAgent,
     DataService,
-    EventDetailsResolverService, // remove?
     UserAgent,
     DatePipe,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

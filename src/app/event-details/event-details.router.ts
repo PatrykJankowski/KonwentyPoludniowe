@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { EventDetailsPage } from './event-details.page';
-import { EventDetailsResolverService } from './event-details.resolver';
+import { EventDetailsResolver } from './event-details.resolver';
 
 const routes: Routes = [
-  { path: '', component: EventDetailsPage, resolve: { eventDetails: EventDetailsResolverService } }
+  { path: '', component: EventDetailsPage, resolve: { eventDetails: EventDetailsResolver } }
 ];
 
 @NgModule({
@@ -14,4 +14,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class EventDetailsRouterModule {}
+export class EventDetailsRouter {}

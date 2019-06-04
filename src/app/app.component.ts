@@ -6,7 +6,7 @@ import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { Platform } from '@ionic/angular';
 
 @Component({
-  selector: 'app-root',
+  selector: 'ngx-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {

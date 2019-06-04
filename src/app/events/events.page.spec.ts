@@ -5,21 +5,21 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DataService } from '../services/data.service';
-import { HomePage } from './home.page';
+import { EventsPage } from './home.page';
 
 // mock the service
 class MockDummyService extends DataService {
   // mock everything used by the component
 }
 
-describe('HomePage', () => {
-  let component: HomePage;
-  let fixture: ComponentFixture<HomePage>;
+describe('EventsPage', () => {
+  let component: EventsPage;
+  let fixture: ComponentFixture<EventsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
-      declarations: [HomePage],
+      declarations: [EventsPage],
       providers: [{
         provide: DataService,
         useClass: MockDummyService
@@ -30,7 +30,7 @@ describe('HomePage', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomePage);
+    fixture = TestBed.createComponent(EventsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

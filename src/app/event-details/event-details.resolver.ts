@@ -3,8 +3,10 @@ import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 
 import { DataService } from '../services/data.service';
 
-@Injectable()
-export class EventDetailsResolverService implements Resolve<any> {
+@Injectable({
+  providedIn: 'root'
+})
+export class EventDetailsResolver implements Resolve<any> {
   constructor(private dataService: DataService) {}
 
   resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): any {
