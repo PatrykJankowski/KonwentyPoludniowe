@@ -7,7 +7,14 @@
 </ion-header>
 
 <ion-content>
+
   <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
-  <h1>{{ eventDetails.name }}</h1>
-  {{ eventDetails.description }}
+
+  <ion-card>
+    <ion-card-content>
+      <h1>{{ eventDetails.name }}</h1>
+      <p>{{ eventDetails.description }}</p>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

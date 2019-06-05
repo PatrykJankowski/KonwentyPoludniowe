@@ -6,12 +6,12 @@
     <ion-grid>
       <ion-row>
 
-        <ion-col size="4">
+        <ion-col size="3">
           <ion-item>
             <div class="filter">
               <ion-label class="filter__label">Kategoria:</ion-label>
               <div class="filter__arrow"></div>
-              <ion-select ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="categoryFilter">
+              <ion-select class="filter__option" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="categoryFilter">
                 <ion-select-option value="" selected>Wszystkie</ion-select-option>
                 <ion-select-option *ngFor="let category of categories" value="{{ category }}">{{ category }}</ion-select-option>
               </ion-select>
@@ -19,12 +19,12 @@
           </ion-item>
         </ion-col>
 
-        <ion-col size="4">
+        <ion-col size="3">
           <ion-item>
             <div class="filter">
               <ion-label class="filter__label">Miasto:</ion-label>
               <div class="filter__arrow"></div>
-              <ion-select ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="locationFilter">
+              <ion-select class="filter__option" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="locationFilter">
                 <ion-select-option value="" selected>Wszystkie</ion-select-option>
                 <ion-select-option *ngFor="let location of locations" value="{{ location }}">{{ location }}</ion-select-option>
               </ion-select>
@@ -32,13 +32,17 @@
           </ion-item>
         </ion-col>
 
-        <ion-col size="4">
+        <ion-col size="3">
           <ion-item>
             <div class="filter">
               <ion-label class="filter__label filter__label--date">Data:</ion-label>
-              <ion-datetime value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter" ></ion-datetime>
+              <ion-datetime class="filter__option filter__option--date" value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter" ></ion-datetime>
             </div>
           </ion-item>
+        </ion-col>
+
+        <ion-col size="3">
+              <img src="assets/logo.png">
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -48,6 +52,11 @@
 </ion-header>
 
 <ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="loadData(true, $event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
 
   <ion-card *ngFor="let event of filteredEvents" [routerLink]="['/event-details', event.id]">
     <ion-card-content class="event-card">
@@ -60,7 +69,7 @@
           </ion-col>
           <ion-col no-padding>
             <ion-row text-center>
-              <h2 class="event-card__title">{{ event.name }}</h2>
+              <h2 class="event-card__title">{{ (event.name.length>18) ? (event.name | slice:0:18) + '...' : (event.name) }}</h2>
             </ion-row>
             <ion-row text-center>
               <h4 class="event-card__category">{{ event.event_type }}</h4>

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Events } from '../models/events.model';
 import { DataService } from '../services/data.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'ngx-home',
@@ -29,9 +30,15 @@ export class EventsPage implements OnInit {
   private categories = [];
   private locations = [];
 
-  constructor(private route: ActivatedRoute, public dataService: DataService, public datePipe: DatePipe) {}
+  constructor(private route: ActivatedRoute, public dataService: DataService, public datePipe: DatePipe, private plt: Platform) {}
 
   ngOnInit(): void {
+
+    this.plt.ready()
+      .then(() => {
+      this.loadData(true);
+    });
+
     this.initFilters();
     this.setFilteredData();
 
@@ -60,6 +67,16 @@ export class EventsPage implements OnInit {
       this.setFilteredData();
     });
 }
+
+  loadData(refresh = false, refresher?) {
+    this.dataService.getData(refresh)
+      .subscribe(res => {
+      this.events = res;
+      if (refresher) {
+        refresher.target.complete();
+      }
+    });
+  }
 
   initFilters(): void {
     for (const event of this.events) {

@@ -13,5 +13,6 @@ export class EventDetailsPage {
 
   constructor(private activatedRoute: ActivatedRoute) {
     this.eventDetails = this.activatedRoute.snapshot.data.eventDetails[0];
+    this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
   }
 }

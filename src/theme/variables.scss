@@ -31,20 +31,25 @@
 
 @font-face {
   font-family: 'Khand';
-  font-style: normal;
-  font-weight: 500;
-  src: url('../assets/fonts/khand/Khand-Medium.ttf');
-}
-
-@font-face {
-  font-family: 'Khand';
   font-style: semi-bold;
   font-weight: 600;
   src: url('../assets/fonts/khand/Khand-SemiBold.ttf');
 }
 
+@font-face {
+  font-family: 'Khand';
+  font-style: bold;
+  font-weight: 700;
+  src: url('../assets/fonts/opensans/OpenSans-Bold.ttf');
+}
+
 h1, h2 {
   font-family: "Khand", serif !important;
+  color: #000;
+}
+
+h3, h4 {
+  color: #000;
 }
 
 
@@ -53,6 +58,7 @@ h1, h2 {
 
   /** fonts **/
   --ion-font-family: 'Open Sans', serif;
+  --ion-text-color: #000;
 
   /** primary **/
   --ion-color-primary: #6C5477;
@@ -127,6 +133,6 @@ h1, h2 {
   --ion-color-light-tint: #f5f6f9;
 
   --ion-toolbar-color: var(--ion-color-primary-contrast);
-  --ion-background-color: #dad5db;
+  --ion-background-color: #c5bbc8;
   --ion-item-background: #fff;
 }

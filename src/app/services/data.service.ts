@@ -1,9 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { Storage } from '@ionic/storage';
 
+import { from, Observable } from 'rxjs';
+
+import { tap } from 'rxjs/operators';
 import { Events } from '../models/events.model';
+import { ConnectionStatus, NetworkService } from './network.service';
+
+const API_STORAGE_KEY = 'specialkey';
+const API_URL = 'https://konwenty-poludniowe.pl/events_app.php';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +20,7 @@ export class DataService {
 
     private response: any;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private networkService: NetworkService, private storage: Storage) {
         this.events = this.getData();
     }
 
@@ -43,15 +50,30 @@ export class DataService {
 //        });
 //    }
 
-    getData(): Observable<any> {
-      const apiURL = 'https://konwenty-poludniowe.pl/events_app.php';
+    // Dwa razy sie wywołuje???????????????????????????????????????????
+    getData(forceRefresh = false): Observable<any> {
 
-      return this.response = this.http.get(apiURL);
+        if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
+            console.log('OOOOFILNEEEEE');
+
+            return from(this.getLocalData('events'));
+        }
+
+        return this.response = this.http.get('/assets/data.json')
+          .pipe(tap(events => this.setLocalData('events', events)));
     }
 
     getDetails(id: number): Observable<any> {
         const apiURL = `https://konwenty-poludniowe.pl/events_app.php?id=${id}`;
 
         return this.response = this.http.get(apiURL);
+    }
+
+    private setLocalData(key, data): void {
+        this.storage.set(`${API_STORAGE_KEY}-${key}`, data);
+    }
+
+    private getLocalData(key): Promise<string> {
+        return this.storage.get(`${API_STORAGE_KEY}-${key}`);
     }
 }
