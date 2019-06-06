@@ -64,9 +64,14 @@ export class DataService {
     }
 
     getDetails(id: number): Observable<any> {
-        const apiURL = `https://konwenty-poludniowe.pl/events_app.php?id=${id}`;
+        // const apiURL = `https://konwenty-poludniowe.pl/events_app.php?id=${id}`;
+        const apiURL = `/assets/data2.json?id=${id}`;
 
         return this.response = this.http.get(apiURL);
+    }
+
+    setFav(id): void {
+        this.setLocalData('events-fav', id);
     }
 
     private setLocalData(key, data): void {

@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
+import { Platform } from '@ionic/angular';
 import { Events } from '../models/events.model';
 import { DataService } from '../services/data.service';
-import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'ngx-home',
@@ -68,14 +68,14 @@ export class EventsPage implements OnInit {
     });
 }
 
-  loadData(refresh = false, refresher?) {
+  loadData(refresh = false, refresher?): void {
     this.dataService.getData(refresh)
       .subscribe(res => {
-      this.events = res;
-      if (refresher) {
-        refresher.target.complete();
-      }
-    });
+        this.events = res;
+        if (refresher) {
+          refresher.target.complete();
+        }
+      });
   }
 
   initFilters(): void {
@@ -119,5 +119,9 @@ export class EventsPage implements OnInit {
 
   setSearchingTerm(searchingTerm): void {
     this.searchingTerm = searchingTerm;
+  }
+
+  setFav(id): void {
+    this.dataService.setFav(id);
   }
 }

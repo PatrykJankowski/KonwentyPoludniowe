@@ -42,7 +42,7 @@
         </ion-col>
 
         <ion-col size="3">
-              <img src="assets/logo.png">
+            <img src="assets/logo.png">
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -70,6 +70,7 @@
           <ion-col no-padding>
             <ion-row text-center>
               <h2 class="event-card__title">{{ (event.name.length>18) ? (event.name | slice:0:18) + '...' : (event.name) }}</h2>
+                <div (click)="setFav(event.id)">FAV</div>
             </ion-row>
             <ion-row text-center>
               <h4 class="event-card__category">{{ event.event_type }}</h4>
