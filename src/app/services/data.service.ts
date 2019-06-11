@@ -22,6 +22,11 @@ export class DataService {
 
     constructor(private http: HttpClient, private networkService: NetworkService, private storage: Storage) {
         this.events = this.getData();
+
+        this.storage.get('favoriteEvents')
+          .then(x => console.log(x));
+
+
     }
 
     filterEvents(events, category, location, date): Array<Events> {

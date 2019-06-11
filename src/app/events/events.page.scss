@@ -35,18 +35,21 @@ ion-searchbar {
 
 .filter {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
 
   &__arrow {
     width: 10px;
     height: 8px;
     position: absolute;
     z-index: 3;
-    right: 4px;
+    right: -3px;
     bottom: 11px;
     background: #fff;
-
   }
 
   &__label {
@@ -63,26 +66,59 @@ ion-searchbar {
     top: -2px;
   }
 
+  &__label--fav {
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
   &__option {
     min-width: 100%;
     --padding-top: 0;
     --padding-bottom: 0;
+    padding: 0;
+    margin-right: -16px;
 
     font-size: 11px;
     font-style: italic;
   }
 
   &__option--date {
-    --padding-start: 0;
+    margin-right: 0;
+  }
+
+  &__fav {
+    width: 100%;
+    height: 19px;
+    color: #000;
+  }
+
+  &__fav--saved {
+    color: yellow;
   }
 }
 
+
 .event-card {
-  -webkit-padding-start: 5px;
-  padding-inline-start: 5px;
-  -webkit-padding-end: 5px;
-  padding-inline-end: 5px;
-  padding: 0 5px 0 5px;
+  position: relative;
+
+  .event-card__fav {
+    width: 16px;
+    position: absolute;
+    z-index: 1;
+    right: 15px;
+    top: 5px;
+    background: none;
+  }
+
+  .event-card__inner {
+    -webkit-padding-start: 5px;
+    padding-inline-start: 5px;
+    -webkit-padding-end: 5px;
+    padding-inline-end: 5px;
+    padding: 0 5px 0 5px;
+  }
 
   &__thumb {
     height: 60px;

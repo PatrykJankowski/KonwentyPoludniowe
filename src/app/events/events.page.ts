@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { Events } from '../models/events.model';
 import { DataService } from '../services/data.service';
+import { FavoriteService } from '../services/favourites.service';
 
 @Component({
   selector: 'ngx-home',
@@ -29,8 +30,9 @@ export class EventsPage implements OnInit {
 
   private categories = [];
   private locations = [];
+  private favourites = [];
 
-  constructor(private route: ActivatedRoute, public dataService: DataService, public datePipe: DatePipe, private plt: Platform) {}
+  constructor(private route: ActivatedRoute, public dataService: DataService, public datePipe: DatePipe, private plt: Platform, private favoriteService: FavoriteService) {}
 
   ngOnInit(): void {
 
@@ -41,6 +43,7 @@ export class EventsPage implements OnInit {
 
     this.initFilters();
     this.setFilteredData();
+    this.setFavourites();
 
     this.searchField = new FormControl();
     this.categoryFilter = new FormControl();
@@ -121,7 +124,38 @@ export class EventsPage implements OnInit {
     this.searchingTerm = searchingTerm;
   }
 
-  setFav(id): void {
-    this.dataService.setFav(id);
+  setFavourites(): void {
+    this.favoriteService.getAllFavorites()
+      .then(favourites => { this.favourites = favourites; });
   }
+
+  isFavourite(id) {
+
+    if (!this.favourites) {
+      return false;
+    }
+
+    for (let i = 0; i < this.favourites.length; i++) {
+      if (this.favourites[i] === id) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  addToFavourites(id) {
+    if (!this.isFavourite(id)) {
+      this.favoriteService.addToFavorites(id)
+        .then(favourites => this.favourites = favourites);
+    }
+  }
+
+  removeFromFavourites(id) {
+    if (this.isFavourite(id)) {
+      this.favoriteService.removeFromFavourites(id)
+        .then(favourites => this.favourites = favourites);
+    }
+  }
+
 }

@@ -42,7 +42,10 @@
         </ion-col>
 
         <ion-col size="3">
-            <img src="assets/logo.png">
+          <div class="filter">
+            <div class="filter__label filter__label--fav">Ulubione:</div>
+            <ion-icon name="star-outline" class="filter__fav"></ion-icon>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -58,33 +61,40 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngFor="let event of filteredEvents" [routerLink]="['/event-details', event.id]">
-    <ion-card-content class="event-card">
-      <ion-grid>
-        <ion-row align-items-center>
-          <ion-col size="5">
-            <ion-thumbnail class="event-card__thumb">
-              <img src="{{ event.image }}" alt="Image - {{ event.name}}">
-            </ion-thumbnail>
-          </ion-col>
-          <ion-col no-padding>
-            <ion-row text-center>
-              <h2 class="event-card__title">{{ (event.name.length>18) ? (event.name | slice:0:18) + '...' : (event.name) }}</h2>
-                <div (click)="setFav(event.id)">FAV</div>
-            </ion-row>
-            <ion-row text-center>
-              <h4 class="event-card__category">{{ event.event_type }}</h4>
-            </ion-row>
-            <ion-row text-center>
-              <h3 class="event-card__location">{{ event.location }}</h3>
-            </ion-row>
-            <ion-row justify-content-end>
-              <time datetime="2017-02-14" class="event-card__date">{{ event.date_begin }}</time>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  <div class="event-card" *ngFor="let event of filteredEvents">
+
+    <button ion-button icon-only (click)="addToFavourites(event.id)" *ngIf="!isFavourite(event.id)" class="event-card__fav"><ion-icon name="star-outline"></ion-icon></button>
+    <button ion-button icon-only (click)="removeFromFavourites(event.id)" *ngIf="isFavourite(event.id)" class="event-card__fav"><ion-icon name="star"></ion-icon></button>
+
+    <!--<img src="assets/icon/fav.png" class="event-card__fav" (click)="addToFavourites(event.id)">-->
+
+    <ion-card [routerLink]="['/event-details', event.id]">
+      <ion-card-content class="event-card__inner">
+        <ion-grid>
+          <ion-row align-items-center>
+            <ion-col size="5">
+              <ion-thumbnail class="event-card__thumb">
+                <img src="{{ event.image }}" alt="Image - {{ event.name}}">
+              </ion-thumbnail>
+            </ion-col>
+            <ion-col no-padding>
+              <ion-row text-center>
+                <h2 class="event-card__title">{{ (event.name.length>18) ? (event.name | slice:0:18) + '...' : (event.name) }}</h2>
+              </ion-row>
+              <ion-row text-center>
+                <h4 class="event-card__category">{{ event.event_type }}</h4>
+              </ion-row>
+              <ion-row text-center>
+                <h3 class="event-card__location">{{ event.location }}</h3>
+              </ion-row>
+              <ion-row justify-content-end>
+                <time datetime="2017-02-14" class="event-card__date">{{ event.date_begin }}</time>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
 </ion-content>
