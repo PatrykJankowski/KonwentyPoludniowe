@@ -15,7 +15,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DataService } from './services/data.service';
-import { FavoriteService } from './services/favourites.service';
+import { FavouriteService } from './services/favourites.service';
 
 registerLocaleData(localePl);
 
@@ -28,7 +28,7 @@ registerLocaleData(localePl);
     SplashScreen,
     UserAgent,
     DataService,
-    FavoriteService,
+    FavouriteService,
     UserAgent,
     DatePipe,
     Network,

@@ -36,7 +36,7 @@
           <ion-item>
             <div class="filter">
               <ion-label class="filter__label filter__label--date">Data:</ion-label>
-              <ion-datetime class="filter__option filter__option--date" value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter" ></ion-datetime>
+              <ion-datetime class="filter__option filter__option--date" value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter"></ion-datetime>
             </div>
           </ion-item>
         </ion-col>
@@ -44,7 +44,8 @@
         <ion-col size="3">
           <div class="filter">
             <div class="filter__label filter__label--fav">Ulubione:</div>
-            <ion-icon name="star-outline" class="filter__fav"></ion-icon>
+            <ion-icon name="star-outline" class="filter__fav" *ngIf="!favouritesOnly" (click)="favouritesFilter()"></ion-icon>
+            <ion-icon name="star" class="filter__fav" *ngIf="favouritesOnly" (click)="favouritesFilter()"></ion-icon>
           </div>
         </ion-col>
       </ion-row>

@@ -6,13 +6,42 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="event-details">
 
-  <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
+  <ion-card class="event-details__header" no-margin>
+    <ion-card-content class="event-card__inner">
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col size="5">
+            <ion-thumbnail class="event-details__thumb">
+              <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="7" no-padding>
+            <ion-row text-center>
+              <h2 class="event-details__title">{{ (eventDetails.name.length>30) ? (eventDetails.name | slice:0:30) + '...' : (eventDetails.name) }}</h2>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 
   <ion-card>
     <ion-card-content>
-      <h1>{{ eventDetails.name }}</h1>
+      <h4 class="event-details__caption">Konwencja: </h4>
+      <p>{{ eventDetails.event_type }}</p>
+
+      <h4 class="event-details__caption">Data: </h4>
+      <p>{{ eventDetails.date_begin }}</p>
+
+      <h4 class="event-details__caption">Adres: </h4>
+      <p>{{ eventDetails.address }}</p>
+
+      <h4 class="event-details__caption">Adres: </h4>
+      <p>{{ eventDetails.address }}</p>
+
+      <h4 class="event-details__caption">Opis: </h4>
       <p>{{ eventDetails.description }}</p>
     </ion-card-content>
   </ion-card>

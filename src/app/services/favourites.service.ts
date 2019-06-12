@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 const STORAGE_KEY = 'favoriteEvents';
 
 @Injectable()
-export class FavoriteService {
+export class FavouriteService {
+  favourites = [];
 
   constructor(public storage: Storage) {
-
-    console.log(this.isFavorite(994));
-
+    this.getAllFavorites()
+      .then(favourites => this.favourites = favourites);
   }
 
-  isFavorite(eventId) {
+/*  isFavorite(eventId) {
 
     let isFav;
 
@@ -24,6 +22,21 @@ export class FavoriteService {
 
         return isFav;
       });
+  }*/
+
+  isFavourite(id): Boolean {
+
+    if (!this.favourites) {
+      return false;
+    }
+
+    for (let i = 0; i < this.favourites.length; i++) {
+      if (this.favourites[i] === id) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   addToFavorites(eventId): Promise<any> {
@@ -32,8 +45,12 @@ export class FavoriteService {
         if (result) {
           result.push(eventId);
 
+          this.favourites = result;
+
           return this.storage.set(STORAGE_KEY, result);
         }
+
+        this.favourites = result;
 
         return this.storage.set(STORAGE_KEY, [eventId]);
       });
@@ -45,6 +62,7 @@ export class FavoriteService {
         if (result) {
           const index = result.indexOf(eventId);
           result.splice(index, 1);
+          this.favourites = result;
 
           return this.storage.set(STORAGE_KEY, result);
         }
