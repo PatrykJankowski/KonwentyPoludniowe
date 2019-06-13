@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
+
 import { forkJoin, from, Observable, of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 
-const STORAGE_REQ_KEY = 'storedreq';
+const STORAGE_REQ_KEY = 'kkstoredreq';
 
 interface StoredRequest {
   url: string;
@@ -29,12 +31,12 @@ export class OfflineManagerService {
         if (storedObj && storedObj.length > 0) {
           return this.sendRequests(storedObj)
             .pipe(finalize(() => {
-              const toast = this.toastController.create({
+              const toastController = this.toastController.create({
                 message: 'Local data succesfully synced to API!',
                 duration: 3000,
                 position: 'bottom'
               });
-              toast.then(toast => toast.present());
+              toastController.then(toast => toast.present());
 
               this.storage.remove(STORAGE_REQ_KEY);
             })
@@ -46,41 +48,6 @@ export class OfflineManagerService {
         }
       })
     );
-  }
-
-  storeRequest(url, type, data) {
-    const toast = this.toastController.create({
-      message: 'Your data is stored locally because you seem to be offline.',
-      duration: 3000,
-      position: 'bottom'
-    });
-    toast.then(toast => toast.present());
-
-    const action: StoredRequest = {
-      url,
-      type,
-      data,
-      time: new Date().getTime(),
-      id: Math.random()
-        .toString(36)
-        .replace(/[^a-z]+/g, '')
-        .substr(0, 5)
-    };
-    // https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
-
-    return this.storage.get(STORAGE_REQ_KEY)
-      .then(storedOperations => {
-      let storedObj = JSON.parse(storedOperations);
-
-      if (storedObj) {
-        storedObj.push(action);
-      } else {
-        storedObj = [action];
-      }
-
-      // Save old & new local transactions back to Storage
-      return this.storage.set(STORAGE_REQ_KEY, JSON.stringify(storedObj));
-    });
   }
 
   sendRequests(operations: Array<StoredRequest>) {

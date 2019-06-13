@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
+
 import { Network } from '@ionic-native/network/ngx';
 import { Platform, ToastController } from '@ionic/angular';
+
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export enum ConnectionStatus {
-  Online,
-  Offline
-}
+import { ConnectionStatus } from '../models/network';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +23,9 @@ export class NetworkService {
     });
   }
 
-  initializeNetworkEvents() {
+  initializeNetworkEvents(): void {
     this.network.onDisconnect()
-      .subscribe(() => {     console.log("------------------------ asdasd DDDDDDDD ----------------------")
-
+      .subscribe(() => {
         if (this.status.getValue() === ConnectionStatus.Online) {
         console.log('WE ARE OFFLINE');
         this.updateNetworkStatus(ConnectionStatus.Offline);
@@ -35,8 +33,7 @@ export class NetworkService {
     });
 
     this.network.onConnect()
-      .subscribe(() => {     console.log("------------------------ asdasd DDDDDDDD ----------------------")
-
+      .subscribe(() => {
         if (this.status.getValue() === ConnectionStatus.Offline) {
         console.log('WE ARE ONLINE');
         this.updateNetworkStatus(ConnectionStatus.Online);
@@ -49,6 +46,7 @@ export class NetworkService {
   }
 
   getCurrentNetworkStatus(): ConnectionStatus {
+    console.log(this.status.getValue());
     return this.status.getValue();
   }
 
@@ -56,11 +54,11 @@ export class NetworkService {
     this.status.next(status);
 
     const connection = status === ConnectionStatus.Offline ? 'Offline' : 'Online';
-    const toast = this.toastController.create({
+    const toastController = this.toastController.create({
       message: `You are now ${connection}`,
       duration: 3000,
       position: 'bottom'
     });
-    toast.then(toast => toast.present());
+    toastController.then(toast => toast.present());
   }
 }

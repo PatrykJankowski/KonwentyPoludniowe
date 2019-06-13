@@ -1,13 +1,14 @@
-<ion-header no-border>
-  <ion-toolbar>
-    <ion-title>
-      <img alt="Konwenty Południowe" height="40" src="assets/logo.png" >
-    </ion-title>
-    <ion-grid>
-      <ion-row>
+<ion-header no-border class="header">
+  <ion-toolbar class="header__toolbar">
 
+    <ion-title class="header__title">
+      <img alt="Konwenty Południowe" src="assets/logo.png" class="header__logo">
+    </ion-title>
+
+    <ion-grid class="header__grid">
+      <ion-row>
         <ion-col size="3">
-          <ion-item>
+          <ion-item class="header__item">
             <div class="filter">
               <ion-label class="filter__label">Kategoria:</ion-label>
               <div class="filter__arrow"></div>
@@ -20,7 +21,7 @@
         </ion-col>
 
         <ion-col size="3">
-          <ion-item>
+          <ion-item class="header__item">
             <div class="filter">
               <ion-label class="filter__label">Miasto:</ion-label>
               <div class="filter__arrow"></div>
@@ -33,7 +34,7 @@
         </ion-col>
 
         <ion-col size="3">
-          <ion-item>
+          <ion-item class="header__item">
             <div class="filter">
               <ion-label class="filter__label filter__label--date">Data:</ion-label>
               <ion-datetime class="filter__option filter__option--date" value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter"></ion-datetime>
@@ -50,9 +51,10 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
   </ion-toolbar>
-  <ion-searchbar placeholder="Szukaj..." [formControl]="searchField"></ion-searchbar>
+
+  <ion-searchbar placeholder="Szukaj..." class="header__searchbar" [formControl]="searchField"></ion-searchbar>
+
 </ion-header>
 
 <ion-content>

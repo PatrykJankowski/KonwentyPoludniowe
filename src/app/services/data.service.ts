@@ -7,8 +7,9 @@ import { from, Observable } from 'rxjs';
 
 import { tap } from 'rxjs/operators';
 import { Events } from '../models/events.model';
+import { ConnectionStatus } from '../models/network';
 import { FavouriteService } from './favourites.service';
-import { ConnectionStatus, NetworkService } from './network.service';
+import { NetworkService } from './network.service';
 
 const API_STORAGE_KEY = 'KK';
 const API_URL = 'https://konwenty-poludniowe.pl/events_app.php';
@@ -48,8 +49,7 @@ export class DataService {
     }
 
     // Dwa razy sie wywołuje???????????????????????????????????????????
-    getData(forceRefresh = false): Observable<any> {
-
+    getData(forceRefresh = true): Observable<any> {
         if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
             console.log('OFLINE');
 

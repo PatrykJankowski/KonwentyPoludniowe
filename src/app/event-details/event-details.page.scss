@@ -1,5 +1,19 @@
-.event-details {
+.header {
+  &__toolbar {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --background: #fff;
+  }
 
+  &__title {
+    padding: 5px;
+    background: var(--ion-color-primary);
+  }
+}
+
+.event-details {
   &__header {
     border-radius: 0;
   }
