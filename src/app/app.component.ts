@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { Platform } from '@ionic/angular';
+
+import { ConnectionStatus } from './models/network';
 import { NetworkService } from './services/network.service';
 import { OfflineManagerService } from './services/offline-manager.service';
-import { ConnectionStatus } from './models/network';
 
 @Component({
   selector: 'ngx-root',
@@ -17,18 +17,10 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private userAgent: UserAgent,
     private networkService: NetworkService,
     private offlineManager: OfflineManagerService
   ) {
     this.initializeApp();
-  }
-
-  setUserAgent(): void {
-    console.log('111111');
-    this.userAgent.set('SouthEvents')
-      .then(() => console.log('xxxxx'))
-      .catch((error: any) => console.error(error));
   }
 
   initializeApp(): void {
@@ -36,7 +28,6 @@ export class AppComponent {
       .then(() => {
         this.statusBar.styleDefault();
         this.splashScreen.hide();
-        this.setUserAgent();
         this.networkService.onNetworkChange()
           .subscribe((status: ConnectionStatus) => {
             if (status === ConnectionStatus.Online) {

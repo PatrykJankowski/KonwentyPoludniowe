@@ -12,18 +12,6 @@ export class FavouriteService {
       .then(favourites => this.favourites = favourites);
   }
 
-/*  isFavorite(eventId) {
-
-    let isFav;
-
-    from(this.getAllFavorites())
-      .subscribe(result => {
-        isFav = result && result.indexOf(eventId) !== -1;
-
-        return isFav;
-      });
-  }*/
-
   isFavourite(id): Boolean {
 
     if (!this.favourites) {

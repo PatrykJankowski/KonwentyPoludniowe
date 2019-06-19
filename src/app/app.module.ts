@@ -5,10 +5,10 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
+import { HTTP } from '@ionic-native/http/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { UserAgent } from '@ionic-native/user-agent/ngx';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -26,10 +26,9 @@ registerLocaleData(localePl);
   providers: [
     StatusBar,
     SplashScreen,
-    UserAgent,
+    HTTP,
     DataService,
     FavouriteService,
-    UserAgent,
     DatePipe,
     Network,
     Storage,

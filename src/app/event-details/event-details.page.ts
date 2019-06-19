@@ -12,7 +12,7 @@ export class EventDetailsPage {
   private readonly eventDetails: EventDetails;
 
   constructor(private activatedRoute: ActivatedRoute) {
-    this.eventDetails = this.activatedRoute.snapshot.data.eventDetails[0];
-    // this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
+    this.eventDetails = JSON.parse(this.activatedRoute.snapshot.data.eventDetails.data)[0];
+    this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
   }
 }

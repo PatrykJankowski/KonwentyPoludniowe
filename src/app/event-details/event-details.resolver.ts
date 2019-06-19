@@ -10,6 +10,6 @@ export class EventDetailsResolver implements Resolve<any> {
   constructor(private dataService: DataService) {}
 
   resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): any {
-    return this.dataService.getDetails(activatedRouteSnapshot.params.id);
+    return this.dataService.getEventDetails(activatedRouteSnapshot.params.id);
   }
 }

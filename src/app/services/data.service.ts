@@ -1,11 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { HTTP } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
-
 import { tap } from 'rxjs/operators';
+
 import { Events } from '../models/events.model';
 import { ConnectionStatus } from '../models/network';
 import { FavouriteService } from './favourites.service';
@@ -13,22 +13,25 @@ import { NetworkService } from './network.service';
 
 const API_STORAGE_KEY = 'KK';
 const API_URL = 'https://konwenty-poludniowe.pl/events_app.php';
+const API_AUTH = {'User-Agent': 'SouthEvents'};
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-    events: Observable<Array<Events>>;
+    private events: Observable<Array<Events>>;
+    private response: Observable<any>;
 
-    private response: any;
-
-    constructor(private http: HttpClient, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService) {
-        this.events = this.getData();
-    }
+    constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService) {}
 
     filterEvents(events, category, location, date, favouritesOnly): Array<Events> {
         if (events) {
-            return events.filter((event: Events) =>
+            let x = events;
+            if (events.data) {
+                x = JSON.parse(events.data);
+            }
+
+            return x.filter((event: Events) =>
               (event.event_type.toLowerCase()
                 .indexOf(category.toLowerCase()) > -1 && event.location.toLowerCase()
                 .indexOf(location.toLowerCase()) > -1 && event.date_begin.toLowerCase()
@@ -49,22 +52,18 @@ export class DataService {
     }
 
     // Dwa razy sie wywołuje???????????????????????????????????????????
-    getData(forceRefresh = true): Observable<any> {
+    getEvents(forceRefresh = false): Observable<any> {
+        console.log('Dwa razy sie wywołuje???????????????????????????????????????????');
         if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
-            console.log('OFLINE');
-
             return from(this.getLocalData('events'));
         }
 
-        return this.response = this.http.get(API_URL)
-          .pipe(tap(events => this.setLocalData('events', events)));
+        return this.response = from(this.nativeHttp.get(API_URL, {}, API_AUTH))
+          .pipe(tap(events => this.setLocalData('events', JSON.parse(events.data))));
     }
 
-    getDetails(id: number): Observable<any> {
-        const apiURL = `${API_URL}?id=${id}`;
-        // const apiURL = `/assets/data2.json?id=${id}`;
-
-        return this.response = this.http.get(apiURL);
+    getEventDetails(id: number): Observable<any> {
+        return this.response = from(this.nativeHttp.get(`${API_URL}?id=${id}`, {}, API_AUTH));
     }
 
     private setLocalData(key, data): void {

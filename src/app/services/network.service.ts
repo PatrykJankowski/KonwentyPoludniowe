@@ -18,7 +18,7 @@ export class NetworkService {
     this.plt.ready()
       .then(() => {
       this.initializeNetworkEvents();
-      const status =  this.network.type !== 'none' ? ConnectionStatus.Online : ConnectionStatus.Offline;
+      const status = this.network.type !== 'none' ? ConnectionStatus.Online : ConnectionStatus.Offline;
       this.status.next(status);
     });
   }
@@ -27,7 +27,6 @@ export class NetworkService {
     this.network.onDisconnect()
       .subscribe(() => {
         if (this.status.getValue() === ConnectionStatus.Online) {
-        console.log('WE ARE OFFLINE');
         this.updateNetworkStatus(ConnectionStatus.Offline);
       }
     });
@@ -35,7 +34,6 @@ export class NetworkService {
     this.network.onConnect()
       .subscribe(() => {
         if (this.status.getValue() === ConnectionStatus.Offline) {
-        console.log('WE ARE ONLINE');
         this.updateNetworkStatus(ConnectionStatus.Online);
       }
     });
@@ -46,7 +44,6 @@ export class NetworkService {
   }
 
   getCurrentNetworkStatus(): ConnectionStatus {
-    console.log(this.status.getValue());
     return this.status.getValue();
   }
 
