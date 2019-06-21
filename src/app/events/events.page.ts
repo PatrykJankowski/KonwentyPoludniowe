@@ -15,8 +15,7 @@ import { FavouriteService } from '../services/favourites.service';
 })
 export class EventsPage implements OnInit {
 
-  private events: Array<Events>;
-  private snap: Array<Events>;
+  private events: Array<Events> = this.route.snapshot.data.events;
   private filteredEvents: Array<Events>;
 
   private searchField: FormControl;
@@ -24,11 +23,11 @@ export class EventsPage implements OnInit {
   private locationFilter: FormControl;
   private dateFilter: FormControl;
 
-  private searchingTerm = '';
   private category = '';
   private location = '';
   private date = this.datePipe.transform(new Date(), 'yyyy-MM');
   private favouritesOnly = false;
+  private searchingTerm = '';
 
   private categories = [];
   private locations = [];
@@ -42,22 +41,6 @@ export class EventsPage implements OnInit {
 
   ngOnInit(): void {
 
-    this.plt.ready()
-      .then(() => {
-      this.loadData(true);
-    });
-
-    // TODO: za pierszym razem błąd
-    if (this.route.snapshot.data.events.data) {
-      this.events = this.snap = JSON.parse(this.route.snapshot.data.events.data);
-    } else {
-      this.events = this.snap = this.route.snapshot.data.events;
-    }
-
-    this.initFilters();
-    this.setFilteredData();
-    this.setFavourites();
-
     this.searchField = new FormControl();
     this.categoryFilter = new FormControl();
     this.locationFilter = new FormControl();
@@ -65,7 +48,7 @@ export class EventsPage implements OnInit {
 
     this.searchField.valueChanges.subscribe(searchingTerm => {
       this.setSearchingTerm(searchingTerm);
-      this.setFilteredEvents(this.dataService.searchEvents(this.events, this.searchingTerm));
+      this.setFilteredData();
     });
 
     this.categoryFilter.valueChanges.subscribe(category => {
@@ -81,6 +64,13 @@ export class EventsPage implements OnInit {
     this.dateFilter.valueChanges.subscribe(date => {
       this.setDate(date);
       this.setFilteredData();
+    });
+
+    this.plt.ready()
+      .then(() => {
+        this.initFilters();
+        this.setFilteredData();
+        this.setFavourites();
     });
 }
 
@@ -146,12 +136,12 @@ export class EventsPage implements OnInit {
     }
   }
 
+  getFilteredEvents(): any {
+    return this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.favouritesOnly, this.searchingTerm);
+  }
+
   setFilteredData(): void {
-    this.setEvents(this.snap);
-    this.setEvents(this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.favouritesOnly));
-    this.setFilteredEvents(this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.favouritesOnly));
-    this.setSearchingTerm(this.searchingTerm);
-    this.setFilteredEvents(this.dataService.searchEvents(this.filteredEvents, this.searchingTerm));
+    this.filteredEvents = this.getFilteredEvents();
   }
 
   setCategory(category): void {
@@ -169,14 +159,6 @@ export class EventsPage implements OnInit {
   setFavourites(): void {
     this.favoriteService.getAllFavorites()
       .then(favourites => this.favourites = favourites);
-  }
-
-  setFilteredEvents(items): void {
-    this.filteredEvents = items;
-  }
-
-  setEvents(events): void {
-    this.events = events;
   }
 
   setSearchingTerm(searchingTerm): void {
