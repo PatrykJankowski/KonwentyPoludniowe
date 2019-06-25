@@ -9,10 +9,15 @@ import { EventDetails } from '../models/events.model';
 })
 export class EventDetailsPage {
 
-  private readonly eventDetails: EventDetails;
+  private eventDetails: EventDetails;
 
   constructor(private activatedRoute: ActivatedRoute) {
-    this.eventDetails = JSON.parse(this.activatedRoute.snapshot.data.eventDetails.data)[0];
-    this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
+    this.eventDetails = this.activatedRoute.snapshot.data.eventDetails;
+    if (this.eventDetails.description) {
+      this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
+    }
+    if (this.eventDetails.price) {
+      this.eventDetails.price = this.eventDetails.price.replace(/<[^>]*>/g, '');
+    }
   }
 }

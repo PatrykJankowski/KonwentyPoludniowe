@@ -1,4 +1,5 @@
 <ion-header no-border class="header">
+
   <ion-toolbar class="header__toolbar">
 
     <ion-title class="header__title">
@@ -7,7 +8,7 @@
 
     <ion-grid class="header__grid">
       <ion-row>
-        <ion-col size="3">
+        <ion-col size="3" class="header__col">
           <ion-item class="header__item">
             <div class="filter">
               <ion-label class="filter__label">Kategoria:</ion-label>
@@ -16,11 +17,16 @@
                 <ion-select-option value="" selected>Wszystkie</ion-select-option>
                 <ion-select-option *ngFor="let category of categories" value="{{ category }}">{{ category }}</ion-select-option>
               </ion-select>
+              <div class="filter__dots">
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+              </div>
             </div>
           </ion-item>
         </ion-col>
 
-        <ion-col size="3">
+        <ion-col size="3" class="header__col">
           <ion-item class="header__item">
             <div class="filter">
               <ion-label class="filter__label">Miasto:</ion-label>
@@ -29,20 +35,34 @@
                 <ion-select-option value="" selected>Wszystkie</ion-select-option>
                 <ion-select-option *ngFor="let location of locations" value="{{ location }}">{{ location }}</ion-select-option>
               </ion-select>
+              <div class="filter__dots">
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+              </div>
             </div>
           </ion-item>
         </ion-col>
 
-        <ion-col size="3">
+        <ion-col size="3" class="header__col">
           <ion-item class="header__item">
             <div class="filter">
-              <ion-label class="filter__label filter__label--date">Data:</ion-label>
-              <ion-datetime class="filter__option filter__option--date" value="2019-06" display-format="YYYY-MM" doneText="Potwierdź" cancelText="Anuluj" [formControl]="dateFilter"></ion-datetime>
+              <ion-label class="filter__label">Data:</ion-label>
+              <div class="filter__arrow"></div>
+              <ion-select class="filter__option" ok-text="Potwierdź" cancel-text="Anuluj" [formControl]="dateFilter">
+                <ion-select-option value="" selected>Nadchodzące</ion-select-option>
+                <ion-select-option *ngFor="let date of dates" value="{{ date }}">{{ date }}</ion-select-option>
+              </ion-select>
+              <div class="filter__dots">
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+                <span class="filter__dot"></span>
+              </div>
             </div>
           </ion-item>
         </ion-col>
 
-        <ion-col size="3">
+        <ion-col size="3" class="header__col">
           <div class="filter">
             <div class="filter__label filter__label--fav">Ulubione:</div>
             <ion-icon name="star-outline" class="filter__fav" *ngIf="!favouritesOnly" (click)="favouritesFilter()"></ion-icon>
@@ -66,14 +86,19 @@
 
   <div class="event-card" *ngFor="let event of filteredEvents">
 
-    <button ion-button icon-only (click)="addToFavourites(event.id)" *ngIf="!isFavourite(event.id)" class="event-card__fav"><ion-icon name="star-outline"></ion-icon></button>
-    <button ion-button icon-only (click)="removeFromFavourites(event.id)" *ngIf="isFavourite(event.id)" class="event-card__fav"><ion-icon name="star"></ion-icon></button>
+    <button ion-button icon-only (click)="addToFavourites(event.id)" *ngIf="!isFavourite(event.id)" class="event-card__fav">
+      <ion-icon name="star-outline"  class="event-card__icon"></ion-icon>
+    </button>
+    <button ion-button icon-only (click)="removeFromFavourites(event.id)" *ngIf="isFavourite(event.id)" class="event-card__fav">
+      <ion-icon name="star" class="event-card__icon"></ion-icon>
+    </button>
 
     <!--<img src="assets/icon/fav.png" class="event-card__fav" (click)="addToFavourites(event.id)">-->
 
     <ion-card [routerLink]="['/event-details', event.id]">
+
       <ion-card-content class="event-card__inner">
-        <ion-grid>
+        <ion-grid no-padding>
           <ion-row align-items-center>
             <ion-col size="5">
               <ion-thumbnail class="event-card__thumb">
@@ -91,7 +116,7 @@
                 <h3 class="event-card__location">{{ event.location }}</h3>
               </ion-row>
               <ion-row justify-content-end>
-                <time datetime="2017-02-14" class="event-card__date">{{ event.date_begin }}</time>
+                <time class="event-card__date">{{ event.date_begin }}</time>
               </ion-row>
             </ion-col>
           </ion-row>

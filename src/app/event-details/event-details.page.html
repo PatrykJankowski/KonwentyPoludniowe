@@ -1,7 +1,7 @@
 <ion-header no-border class="header">
   <ion-toolbar class="header__toolbar">
     <ion-title class="header__title">
-      <img alt="Konwenty Południowe" height="40" src="assets/logo.png" >
+      <img alt="Konwenty Południowe" src="assets/logo.png" class="header__logo">
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,19 +9,15 @@
 <ion-content class="event-details">
 
   <ion-card class="event-details__header" no-margin>
-    <ion-card-content class="event-card__inner">
+    <ion-card-content class="event-details__inner">
       <ion-grid>
+        <ion-row text-center>
+          <h2 class="event-details__title">{{ eventDetails.name }}</h2>
+        </ion-row>
         <ion-row align-items-center>
-          <ion-col size="5">
-            <ion-thumbnail class="event-details__thumb">
-              <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
-            </ion-thumbnail>
-          </ion-col>
-          <ion-col size="7" no-padding>
-            <ion-row text-center>
-              <h2 class="event-details__title">{{ (eventDetails.name.length>30) ? (eventDetails.name | slice:0:30) + '...' : (eventDetails.name) }}</h2>
-            </ion-row>
-          </ion-col>
+          <ion-thumbnail class="event-details__thumb">
+            <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
+          </ion-thumbnail>
         </ion-row>
       </ion-grid>
     </ion-card-content>
@@ -29,19 +25,22 @@
 
   <ion-card>
     <ion-card-content>
-      <h4 class="event-details__caption">Konwencja: </h4>
+      <h4 class="event-details__caption">Konwencja:</h4>
       <p>{{ eventDetails.event_type }}</p>
 
-      <h4 class="event-details__caption">Data: </h4>
-      <p>{{ eventDetails.date_begin }}</p>
+      <h4 class="event-details__caption">Data:</h4>
+      <p *ngIf="eventDetails.date_end == eventDetails.date_begin; else date_end">{{ eventDetails.date_begin }}</p>
+      <ng-template #date_end>
+        <p>{{ eventDetails.date_begin }} - {{ eventDetails.date_end }}</p>
+      </ng-template>
 
-      <h4 class="event-details__caption">Adres: </h4>
-      <p>{{ eventDetails.address }}</p>
+      <h4 class="event-details__caption">Adres:</h4>
+      <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
 
-      <h4 class="event-details__caption">Adres: </h4>
-      <p>{{ eventDetails.address }}</p>
+      <h4 class="event-details__caption">Cena:</h4>
+      <p>{{ eventDetails.price }}</p>
 
-      <h4 class="event-details__caption">Opis: </h4>
+      <h4 class="event-details__caption">Opis:</h4>
       <p>{{ eventDetails.description }}</p>
     </ion-card-content>
   </ion-card>

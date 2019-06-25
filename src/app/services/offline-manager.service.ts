@@ -7,7 +7,7 @@ import { Storage } from '@ionic/storage';
 import { forkJoin, from, Observable, of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 
-const STORAGE_REQ_KEY = 'kkstoredreq';
+const STORAGE_REQ_KEY = 'KK-storedreq';
 
 interface StoredRequest {
   url: string;
@@ -32,7 +32,7 @@ export class OfflineManagerService {
           return this.sendRequests(storedObj)
             .pipe(finalize(() => {
               const toastController = this.toastController.create({
-                message: 'Local data succesfully synced to API!',
+                message: 'Dane lokalne zostały zsynchronizowane!',
                 duration: 3000,
                 position: 'bottom'
               });
@@ -41,20 +41,17 @@ export class OfflineManagerService {
               this.storage.remove(STORAGE_REQ_KEY);
             })
           );
-        } else {
-          console.log('no local events to sync');
-
-          return of(false);
         }
+
+        return of(false);
       })
     );
   }
 
-  sendRequests(operations: Array<StoredRequest>) {
+  sendRequests(operations: Array<StoredRequest>): Observable<any> {
     const obs = [];
 
     for (const op of operations) {
-      console.log('Make one request: ', op);
       const oneObs = this.http.request(op.type, op.url, op.data);
       obs.push(oneObs);
     }

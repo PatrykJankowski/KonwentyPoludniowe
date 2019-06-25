@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
-import { from, Observable } from 'rxjs';
+import { from, Observable, pipe } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
+import { DatePipe } from '@angular/common';
 import { Events } from '../models/events.model';
 import { ConnectionStatus } from '../models/network';
 import { FavouriteService } from './favourites.service';
@@ -20,27 +21,37 @@ const API_AUTH = {'User-Agent': 'SouthEvents'};
 })
 export class DataService {
 
-  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService) {}
+  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService, private datePipe: DatePipe) {}
 
-  filterEvents(events, category, location, date, favouritesOnly, search): Array<Events> {
+  filterEvents(events, category, location, date, search): Array<Events> {
 
-      return events.filter((event: Events) => (
+    const todayDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    let futureEvents = false;
+
+    if (!date) {
+      futureEvents = true;
+    }
+
+    return events.filter((event: Events) => (
+      event.event_type.toLowerCase()
+        .indexOf(category.toLowerCase()) > -1 &&
+      event.location.toLowerCase()
+        .indexOf(location.toLowerCase()) > -1 &&
+      ((futureEvents && event.date_end >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
+
+      (event.name.toLowerCase()
+          .indexOf(search.toLowerCase()) > -1 ||
         event.event_type.toLowerCase()
-          .indexOf(category.toLowerCase()) > -1 &&
+          .indexOf(search.toLowerCase()) > -1 ||
         event.location.toLowerCase()
-          .indexOf(location.toLowerCase()) > -1 &&
-        event.date_begin.toLowerCase()
-          .includes(date.toLowerCase()) === true) &&
+          .indexOf(search.toLowerCase()) > -1
+      ));
+  }
 
-        (!favouritesOnly || this.favouritesService.isFavourite(event.id)) &&
-
-        (event.name.toLowerCase()
-            .indexOf(search.toLowerCase()) > -1 ||
-          event.event_type.toLowerCase()
-            .indexOf(search.toLowerCase()) > -1 ||
-          event.location.toLowerCase()
-            .indexOf(search.toLowerCase()) > -1
-        ));
+  getFavouritesEvents(events): Array<Events> {
+    return events.filter((event: Events) => (
+      this.favouritesService.isFavourite(event.id)
+    ));
   }
 
   // TODO: Zapisac eventsdetails w localstorage
@@ -55,7 +66,8 @@ export class DataService {
   }
 
   getEventDetails(id: number): Observable<HTTPResponse> {
-    return from(this.nativeHttp.get(`${API_URL}?id=${id}`, {}, API_AUTH));
+    return from(this.nativeHttp.get(`${API_URL}?id=${id}`, {}, API_AUTH))
+      .pipe(map(eventDetails => JSON.parse(eventDetails.data)[0]));
   }
 
   private setLocalData(key: String, data: Events): void {

@@ -52,7 +52,7 @@ export class NetworkService {
 
     const connection = status === ConnectionStatus.Offline ? 'Offline' : 'Online';
     const toastController = this.toastController.create({
-      message: `You are now ${connection}`,
+      message: `Jesteś teraz ${connection}`,
       duration: 3000,
       position: 'bottom'
     });
