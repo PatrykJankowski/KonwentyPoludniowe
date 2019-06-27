@@ -12,4 +12,7 @@ export interface EventDetails extends Events {
     address: string;
     description: string;
     price: string;
+    www_url: string;
+    event_url: string;
+    fb_url: string;
 }

@@ -25,27 +25,24 @@ export class EventsPage implements OnInit {
   private category = '';
   private location = '';
   private date = '';
-  private favouritesOnly = false;
   private searchingTerm = '';
 
   private categories = [];
   private locations = [];
   private dates = [];
-  private favourites = [];
 
   constructor(private route: ActivatedRoute,
-              private plt: Platform,
+              private platform: Platform,
               private datePipe: DatePipe,
               private dataService: DataService,
-              private favoriteService: FavouriteService) {}
+              private favouritesService: FavouriteService) {}
 
   ngOnInit(): void {
 
-    this.plt.ready()
+    this.platform.ready()
       .then(() => {
         this.initFilters();
         this.setFilteredData();
-        this.setFavourites();
       });
 
     this.searchField = new FormControl();
@@ -74,19 +71,15 @@ export class EventsPage implements OnInit {
     });
 }
 
-  favouritesFilter(): any {
-    this.favouritesOnly = !this.favouritesOnly;
-    this.filterFavourites();
+  ionViewWillEnter(): void {
+    if (this.favouritesService.getFavouritesOnlyFlag()) {
+      this.setFilteredData();
+    }
   }
 
-  loadData(refresh = false, refresher?): void {
-    this.dataService.getEvents(refresh)
-      .subscribe(res => {
-        this.events = res;
-        if (refresher) {
-          refresher.target.complete();
-        }
-      });
+  favouritesFilter(): any {
+    this.favouritesService.setFavouritesOnlyFlag();
+    this.setFilteredData();
   }
 
   initFilters(): void {
@@ -106,54 +99,30 @@ export class EventsPage implements OnInit {
     }
   }
 
-  isFavourite(id): Boolean {
-    if (!this.favourites) {
-      return false;
-    }
-
-    for (let i = 0; i < this.favourites.length; i++) {
-      if (this.favourites[i] === id) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
   addToFavourites(id): void {
-    if (!this.isFavourite(id)) {
-      this.favoriteService.addToFavorites(id)
+    if (!this.favouritesService.isFavourite(id)) {
+      this.favouritesService.addToFavorites(id)
         .then(favourites => {
-          this.favourites = favourites;
           this.setFilteredData();
         });
     }
   }
 
   removeFromFavourites(id): void {
-    if (this.isFavourite(id)) {
-      this.favoriteService.removeFromFavourites(id)
+    if (this.favouritesService.isFavourite(id)) {
+      this.favouritesService.removeFromFavourites(id)
         .then(favourites => {
-          this.favourites = favourites;
           this.setFilteredData();
         });
     }
   }
 
-  filterFavourites(): void {
-    this.filteredEvents = this.getFavourites();
-  }
-
   getFilteredEvents(): any {
-    return this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
-  }
-
-  getFavourites(): any {
-    if (this.favouritesOnly) {
-      return this.dataService.getFavouritesEvents(this.events);
+    if (this.favouritesService.getFavouritesOnlyFlag()) {
+      return this.favouritesService.getFavouritesEvents(this.events);
     }
 
-    return this.getFilteredEvents();
+    return this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
   }
 
   setFilteredData(): void {
@@ -170,11 +139,6 @@ export class EventsPage implements OnInit {
 
   setDate(date): void {
     this.date = date;
-  }
-
-  setFavourites(): void {
-    this.favoriteService.getAllFavorites()
-      .then(favourites => this.favourites = favourites);
   }
 
   setSearchingTerm(searchingTerm): void {

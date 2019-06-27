@@ -65,8 +65,8 @@
         <ion-col size="3" class="header__col">
           <div class="filter">
             <div class="filter__label filter__label--fav">Ulubione:</div>
-            <ion-icon name="star-outline" class="filter__fav" *ngIf="!favouritesOnly" (click)="favouritesFilter()"></ion-icon>
-            <ion-icon name="star" class="filter__fav" *ngIf="favouritesOnly" (click)="favouritesFilter()"></ion-icon>
+            <ion-icon name="star-outline" class="filter__fav" *ngIf="!favouritesService.favouritesEventsOnly" (click)="favouritesFilter()"></ion-icon>
+            <ion-icon name="star" class="filter__fav" *ngIf="favouritesService.favouritesEventsOnly" (click)="favouritesFilter()"></ion-icon>
           </div>
         </ion-col>
       </ion-row>
@@ -79,23 +79,18 @@
 
 <ion-content>
 
-  <ion-refresher slot="fixed" (ionRefresh)="loadData(true, $event)">
-    <ion-refresher-content>
-    </ion-refresher-content>
-  </ion-refresher>
-
   <div class="event-card" *ngFor="let event of filteredEvents">
 
-    <button ion-button icon-only (click)="addToFavourites(event.id)" *ngIf="!isFavourite(event.id)" class="event-card__fav">
-      <ion-icon name="star-outline"  class="event-card__icon"></ion-icon>
+    <button ion-button icon-only class="event-card__fav" (click)="addToFavourites(event.id)" *ngIf="!favouritesService.isFavourite(event.id)" >
+      <ion-icon name="star-outline" class="event-card__icon"></ion-icon>
     </button>
-    <button ion-button icon-only (click)="removeFromFavourites(event.id)" *ngIf="isFavourite(event.id)" class="event-card__fav">
+    <button ion-button icon-only class="event-card__fav" (click)="removeFromFavourites(event.id)" *ngIf="favouritesService.isFavourite(event.id)">
       <ion-icon name="star" class="event-card__icon"></ion-icon>
     </button>
 
     <!--<img src="assets/icon/fav.png" class="event-card__fav" (click)="addToFavourites(event.id)">-->
 
-    <ion-card [routerLink]="['/event-details', event.id]">
+    <ion-card [routerLink]="['/event-details', event.id]" class="event-card__card">
 
       <ion-card-content class="event-card__inner">
         <ion-grid no-padding>

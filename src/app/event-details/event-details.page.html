@@ -12,7 +12,7 @@
     <ion-card-content class="event-details__inner">
       <ion-grid>
         <ion-row text-center>
-          <h2 class="event-details__title">{{ eventDetails.name }}</h2>
+          <ion-card-title class="event-details__title">{{ eventDetails.name }}</ion-card-title>
         </ion-row>
         <ion-row align-items-center>
           <ion-thumbnail class="event-details__thumb">
@@ -23,8 +23,22 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <ion-card class="event-details__card">
     <ion-card-content>
+
+      <div class="event-details__icons">
+        <a *ngIf="eventDetails.www_url" href="{{ eventDetails.www_url }}"><img src="../../assets/icon/website.jpg" class="event-details__icon"></a>
+        <a *ngIf="eventDetails.event_url" href="{{ eventDetails.event_url }}"><img src="../../assets/icon/event.jpg" class="event-details__icon"></a>
+        <a *ngIf="eventDetails.fb_url" href="{{ eventDetails.fb_url }}"><img src="../../assets/icon/fb.jpg" class="event-details__icon"></a>
+
+        <button ion-button icon-only class="event-details__fav" (click)="addToFavourites(eventDetails.id)" *ngIf="!favouritesService.isFavourite(eventDetails.id)">
+          <ion-icon name="star-outline" class="event-details__favicon"></ion-icon>
+        </button>
+        <button ion-button icon-only class="event-details__fav" (click)="removeFromFavourites(eventDetails.id)" *ngIf="favouritesService.isFavourite(eventDetails.id)">
+          <ion-icon name="star" class="event-details__favicon"></ion-icon>
+        </button>
+      </div>
+
       <h4 class="event-details__caption">Konwencja:</h4>
       <p>{{ eventDetails.event_type }}</p>
 

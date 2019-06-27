@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
-import { from, Observable, pipe } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { DatePipe } from '@angular/common';
@@ -24,7 +24,6 @@ export class DataService {
   constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService, private datePipe: DatePipe) {}
 
   filterEvents(events, category, location, date, search): Array<Events> {
-
     const todayDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     let futureEvents = false;
 
@@ -33,25 +32,17 @@ export class DataService {
     }
 
     return events.filter((event: Events) => (
-      event.event_type.toLowerCase()
-        .indexOf(category.toLowerCase()) > -1 &&
-      event.location.toLowerCase()
-        .indexOf(location.toLowerCase()) > -1 &&
+      event.event_type.indexOf(category) > -1 &&
+      event.location.indexOf(location) > -1 &&
       ((futureEvents && event.date_end >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
 
       (event.name.toLowerCase()
-          .indexOf(search.toLowerCase()) > -1 ||
-        event.event_type.toLowerCase()
-          .indexOf(search.toLowerCase()) > -1 ||
-        event.location.toLowerCase()
-          .indexOf(search.toLowerCase()) > -1
+        .indexOf(search.toLowerCase()) > -1 ||
+      event.event_type.toLowerCase()
+        .indexOf(search.toLowerCase()) > -1 ||
+      event.location.toLowerCase()
+        .indexOf(search.toLowerCase()) > -1
       ));
-  }
-
-  getFavouritesEvents(events): Array<Events> {
-    return events.filter((event: Events) => (
-      this.favouritesService.isFavourite(event.id)
-    ));
   }
 
   // TODO: Zapisac eventsdetails w localstorage
@@ -77,4 +68,5 @@ export class DataService {
   private getLocalData(key): Observable<Events> {
     return from(this.storage.get(`${API_STORAGE_KEY}-${key}`));
   }
+
 }
