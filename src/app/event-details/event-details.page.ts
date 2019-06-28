@@ -23,11 +23,11 @@ export class EventDetailsPage implements OnInit {
     }
   }
 
-  addToFavourites(id: Number): void {
+  addToFavourites(id: number): void {
     this.favouritesService.addToFavorites(id);
   }
 
-  removeFromFavourites(id: Number): void {
+  removeFromFavourites(id: number): void {
     this.favouritesService.removeFromFavourites(id);
   }
 }

@@ -42,7 +42,7 @@ export class EventsPage implements OnInit {
     this.platform.ready()
       .then(() => {
         this.initFilters();
-        this.setFilteredData();
+        this.setFilteredEvents();
       });
 
     this.searchField = new FormControl();
@@ -52,34 +52,47 @@ export class EventsPage implements OnInit {
 
     this.searchField.valueChanges.subscribe(searchingTerm => {
       this.setSearchingTerm(searchingTerm);
-      this.setFilteredData();
+      if (this.favouritesService.getFavouritesOnlyFlag()) {
+        this.setFavourites();
+      } else {
+        this.setFilteredEvents();
+      }
     });
 
     this.categoryFilter.valueChanges.subscribe(category => {
       this.setCategory(category);
-      this.setFilteredData();
+      this.setFilteredEvents();
     });
 
     this.locationFilter.valueChanges.subscribe(location => {
       this.setLocation(location);
-      this.setFilteredData();
+      this.setFilteredEvents();
     });
 
     this.dateFilter.valueChanges.subscribe(date => {
       this.setDate(date);
-      this.setFilteredData();
+      this.dataService.getEvents(true, date)
+        .subscribe(events => {
+          console.log(events);
+          this.events = events;
+          this.setFilteredEvents();
+        });
     });
-}
+  }
 
   ionViewWillEnter(): void {
     if (this.favouritesService.getFavouritesOnlyFlag()) {
-      this.setFilteredData();
+      this.setFavourites();
     }
   }
 
   favouritesFilter(): any {
     this.favouritesService.setFavouritesOnlyFlag();
-    this.setFilteredData();
+    if (this.favouritesService.getFavouritesOnlyFlag()) {
+      this.setFavourites();
+    } else {
+      this.setFilteredEvents();
+    }
   }
 
   initFilters(): void {
@@ -87,12 +100,17 @@ export class EventsPage implements OnInit {
       for (const event of this.events) {
         const category = event.event_type;
         const location = event.location;
-        const date = formatDate(event.date_begin, 'yyyy', 'pl');
+        const year = formatDate(event.date_end, 'yyyy', 'pl');
 
         if (this.categories.indexOf(category) === -1) { this.categories.push(category); }
         if (this.locations.indexOf(location) === -1) { this.locations.push(location); }
-        if (this.dates.indexOf(date) === -1) { this.dates.push(date); }
+        if (this.dates.indexOf(year) === -1) { this.dates.push(year); }
       }
+      const maxDate = Math.max(...this.dates);
+      for (let year = 2014; year < maxDate; year++) {
+        this.dates.push(year);
+      }
+
       this.categories.sort();
       this.locations.sort();
       this.dates.sort();
@@ -100,33 +118,29 @@ export class EventsPage implements OnInit {
   }
 
   addToFavourites(id): void {
-    if (!this.favouritesService.isFavourite(id)) {
-      this.favouritesService.addToFavorites(id)
-        .then(favourites => {
-          this.setFilteredData();
-        });
-    }
+    this.favouritesService.addToFavorites(id)
+      .then(() => {
+        if (this.favouritesService.getFavouritesOnlyFlag()) {
+          this.setFavourites();
+        }
+      });
   }
 
   removeFromFavourites(id): void {
-    if (this.favouritesService.isFavourite(id)) {
-      this.favouritesService.removeFromFavourites(id)
-        .then(favourites => {
-          this.setFilteredData();
-        });
-    }
+    this.favouritesService.removeFromFavourites(id)
+      .then(() => {
+        if (this.favouritesService.getFavouritesOnlyFlag()) {
+          this.setFavourites();
+        }
+      });
   }
 
-  getFilteredEvents(): any {
-    if (this.favouritesService.getFavouritesOnlyFlag()) {
-      return this.favouritesService.getFavouritesEvents(this.events);
-    }
-
-    return this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
+  setFilteredEvents(): void {
+    this.filteredEvents = this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
   }
 
-  setFilteredData(): void {
-    this.filteredEvents = this.getFilteredEvents();
+  setFavourites(): void {
+    this.filteredEvents = this.favouritesService.searchFav(this.favouritesService.getFavouritesEvents(this.events), this.searchingTerm);
   }
 
   setCategory(category): void {
@@ -144,5 +158,4 @@ export class EventsPage implements OnInit {
   setSearchingTerm(searchingTerm): void {
     this.searchingTerm = searchingTerm;
   }
-
 }

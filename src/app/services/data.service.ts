@@ -9,7 +9,6 @@ import { map, tap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { Events } from '../models/events.model';
 import { ConnectionStatus } from '../models/network';
-import { FavouriteService } from './favourites.service';
 import { NetworkService } from './network.service';
 
 const API_STORAGE_KEY = 'KK';
@@ -21,10 +20,10 @@ const API_AUTH = {'User-Agent': 'SouthEvents'};
 })
 export class DataService {
 
-  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private favouritesService: FavouriteService, private datePipe: DatePipe) {}
+  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private datePipe: DatePipe) {}
 
   filterEvents(events, category, location, date, search): Array<Events> {
-    const todayDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    const todayDate = new Date();
     let futureEvents = false;
 
     if (!date) {
@@ -34,26 +33,22 @@ export class DataService {
     return events.filter((event: Events) => (
       event.event_type.indexOf(category) > -1 &&
       event.location.indexOf(location) > -1 &&
-      ((futureEvents && event.date_end >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
+      ((futureEvents && new Date(event.date_end) >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
 
       (event.name.toLowerCase()
-        .indexOf(search.toLowerCase()) > -1 ||
-      event.event_type.toLowerCase()
-        .indexOf(search.toLowerCase()) > -1 ||
-      event.location.toLowerCase()
         .indexOf(search.toLowerCase()) > -1
       ));
   }
 
-  // TODO: Zapisac eventsdetails w localstorage
-  getEvents(forceRefresh: Boolean = false): Observable<any> {
+// TODO: Zapisac eventsdetails w localstorage
+  getEvents(forceRefresh: Boolean = false, year = ''): Observable<any> {
     if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
-      return this.getLocalData('events');
+      return this.getLocalData(`events${year}`);
     }
 
-    return from(this.nativeHttp.get(API_URL, {}, API_AUTH))
+    return from(this.nativeHttp.get(`${API_URL}?year=${year}`, {}, API_AUTH))
       .pipe(map(events => JSON.parse(events.data)))
-      .pipe(tap(events => this.setLocalData('events', events)));
+      .pipe(tap(events => this.setLocalData(`events${year}`, events)));
   }
 
   getEventDetails(id: number): Observable<HTTPResponse> {
@@ -61,7 +56,7 @@ export class DataService {
       .pipe(map(eventDetails => JSON.parse(eventDetails.data)[0]));
   }
 
-  private setLocalData(key: String, data: Events): void {
+  private setLocalData(key: string, data): void {
     this.storage.set(`${API_STORAGE_KEY}-${key}`, data);
   }
 

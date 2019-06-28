@@ -12,9 +12,17 @@
     background: var(--ion-color-primary);
   }
 
+  &__back {
+    position: absolute;
+    top: 15px;
+    width: 30px;
+    height: 30px;
+  }
+
   &__logo {
-    height: 40px;
     display: flex;
+    height: 40px;
+    margin: 0 auto;
   }
 }
 
@@ -22,6 +30,13 @@
 
   &__card, &__header {
     border-radius: 0;
+  }
+
+  &__title {
+    margin: 5px 0 15px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: left;
   }
 
   &__inner {
@@ -36,33 +51,31 @@
     width: 50px;
     height: 50px;
     margin: 0 20px 10px 0;
+    color: #000;
   }
 
   &__fav {
-    width: 30px;
     position: absolute;
     z-index: 1;
-    right: 10px;
-    padding: 0;
-    background: none;
-    border: none;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    width: 50px;
+    height: 50px;
+    margin: 0;
   }
 
   &__favicon {
-    width: 30px;
-    height: 30px;
+    position: absolute;
+    left: 0;
+    width: 50px;
+    height: 50px;
   }
 
   &__thumb {
     width: 100%;
     height: 100%;
     align-self: center;
-  }
-
-  &__title {
-    margin: 0 0 5px 0;
-    font-size: 20px;
-    font-weight: 700;
   }
 
   &__caption {

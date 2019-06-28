@@ -13,8 +13,9 @@
   }
 
   &__logo {
-    height: 40px;
     display: flex;
+    height: 40px;
+    margin: 0 auto;
   }
 
   &__grid {
@@ -121,24 +122,28 @@
 }
 
 .event-card {
-  position: relative;
+  min-height: 120px;
 
   &__fav {
-    width: 20px;
     position: absolute;
     z-index: 1;
-    right: 10px;
-    padding: 0;
-    background: none;
-    border: none;
+    top: 10px;
+    right: 15px;
+    display: flex;
+    width: 20px;
+    height: 20px;
+    margin: 0;
   }
 
   &__icon {
+    position: absolute;
+    left: 0;
     width: 20px;
     height: 20px;
   }
 
   &__card {
+    margin: 5px 10px;
     border-radius: 0;
   }
 
@@ -156,9 +161,12 @@
   }
 
   &__title {
-    margin: 0;
+    margin: 5px 5px 0 5px;
     font-size: 18px;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__category, &__location {

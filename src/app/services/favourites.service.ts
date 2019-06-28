@@ -28,10 +28,10 @@ export class FavouriteService {
     return false;
   }
 
-  addToFavorites(eventId: Number): Promise<any> {
+  addToFavorites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
       .then(result => {
-        let favourites: Array<Number> = result;
+        let favourites: Array<number> = result;
         if (!favourites) {
           favourites = [];
         }
@@ -42,7 +42,7 @@ export class FavouriteService {
       });
   }
 
-  removeFromFavourites(eventId: Number): Promise<any> {
+  removeFromFavourites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
       .then(result => {
         const index = result.indexOf(eventId);
@@ -53,21 +53,27 @@ export class FavouriteService {
       });
   }
 
+  searchFav(events, search): Array<Events> {
+    return events.filter((event: Events) => (
+      (event.name.toLowerCase()
+        .indexOf(search.toLowerCase()) > -1)));
+  }
+
   setFavouritesOnlyFlag(): void {
     this.favouritesEventsOnly = !this.favouritesEventsOnly;
   }
 
-  setFavouritesEvents(favouritesEvents: Array<Number>): void {
+  setFavouritesEvents(favouritesEvents): void {
     this.favouritesEvents = favouritesEvents;
   }
 
-  getFavouritesEvents(events): Array<Events> {
+  getFavouritesEvents(events: Array<Events>): Array<Events> {
     return events.filter((event: Events) => (
       this.isFavourite(event.id)
     ));
   }
 
-  getFavoritesEvents(): Promise<Array<Number>> {
+  getFavoritesEvents(): Promise<Array<number>> {
     return this.storage.get(STORAGE_KEY);
   }
 

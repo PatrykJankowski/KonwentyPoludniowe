@@ -1,13 +1,13 @@
 <ion-header no-border class="header">
   <ion-toolbar class="header__toolbar">
     <ion-title class="header__title">
-      <img alt="Konwenty Południowe" src="assets/logo.png" class="header__logo">
+      <ion-back-button defaultHref="/" class="header__back"></ion-back-button>
+      <img src="assets/logo.png" alt="Konwenty Południowe" class="header__logo">
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="event-details">
-
   <ion-card class="event-details__header" no-margin>
     <ion-card-content class="event-details__inner">
       <ion-grid>
@@ -16,7 +16,7 @@
         </ion-row>
         <ion-row align-items-center>
           <ion-thumbnail class="event-details__thumb">
-            <img src="{{ eventDetails.image }}" alt="Image - {{eventDetails.name}}">
+            <ion-img [src]="eventDetails.image" alt="Image - {{eventDetails.name}}"></ion-img>
           </ion-thumbnail>
         </ion-row>
       </ion-grid>
@@ -25,18 +25,17 @@
 
   <ion-card class="event-details__card">
     <ion-card-content>
-
       <div class="event-details__icons">
-        <a *ngIf="eventDetails.www_url" href="{{ eventDetails.www_url }}"><img src="../../assets/icon/website.jpg" class="event-details__icon"></a>
-        <a *ngIf="eventDetails.event_url" href="{{ eventDetails.event_url }}"><img src="../../assets/icon/event.jpg" class="event-details__icon"></a>
-        <a *ngIf="eventDetails.fb_url" href="{{ eventDetails.fb_url }}"><img src="../../assets/icon/fb.jpg" class="event-details__icon"></a>
+        <a *ngIf="eventDetails.www_url" href="{{ eventDetails.www_url }}"><ion-icon name="globe" class="event-details__icon"></ion-icon></a>
+        <a *ngIf="eventDetails.event_url" href="{{ eventDetails.event_url }}"><ion-icon name="calendar" class="event-details__icon"></ion-icon></a>
+        <a *ngIf="eventDetails.fb_url" href="{{ eventDetails.fb_url }}"><ion-icon name="logo-facebook" class="event-details__icon"></ion-icon></a>
 
-        <button ion-button icon-only class="event-details__fav" (click)="addToFavourites(eventDetails.id)" *ngIf="!favouritesService.isFavourite(eventDetails.id)">
-          <ion-icon name="star-outline" class="event-details__favicon"></ion-icon>
-        </button>
-        <button ion-button icon-only class="event-details__fav" (click)="removeFromFavourites(eventDetails.id)" *ngIf="favouritesService.isFavourite(eventDetails.id)">
-          <ion-icon name="star" class="event-details__favicon"></ion-icon>
-        </button>
+        <ion-button fill="clear" class="event-details__fav" (click)="addToFavourites(eventDetails.id)" *ngIf="!favouritesService.isFavourite(eventDetails.id)">
+          <ion-icon name="star-outline" slot="icon-only" class="event-details__favicon"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" class="event-details__fav" (click)="removeFromFavourites(eventDetails.id)" *ngIf="favouritesService.isFavourite(eventDetails.id)">
+          <ion-icon name="star" slot="icon-only" class="event-details__favicon"></ion-icon>
+        </ion-button>
       </div>
 
       <h4 class="event-details__caption">Konwencja:</h4>
@@ -45,11 +44,14 @@
       <h4 class="event-details__caption">Data:</h4>
       <p *ngIf="eventDetails.date_end == eventDetails.date_begin; else date_end">{{ eventDetails.date_begin }}</p>
       <ng-template #date_end>
-        <p>{{ eventDetails.date_begin }} - {{ eventDetails.date_end }}</p>
+        <p>{{ eventDetails.date_begin | date: "dd.MM.y" }} - {{ eventDetails.date_end | date: "dd.MM.y"}}</p>
       </ng-template>
 
       <h4 class="event-details__caption">Adres:</h4>
-      <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
+      <p *ngIf="eventDetails.address==null; else full_address">{{ eventDetails.location }}</p>
+      <ng-template #full_address>
+        <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
+      </ng-template>
 
       <h4 class="event-details__caption">Cena:</h4>
       <p>{{ eventDetails.price }}</p>
@@ -58,5 +60,4 @@
       <p>{{ eventDetails.description }}</p>
     </ion-card-content>
   </ion-card>
-
 </ion-content>
