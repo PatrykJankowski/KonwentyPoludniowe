@@ -14,8 +14,9 @@ import { FavouriteService } from '../services/favourites.service';
   styleUrls: ['events.page.scss']
 })
 export class EventsPage implements OnInit {
+  filteredEvents: Array<Events>;
+
   private events: Array<Events> = this.route.snapshot.data.events;
-  private filteredEvents: Array<Events>;
 
   private searchField: FormControl;
   private categoryFilter: FormControl;
@@ -73,7 +74,6 @@ export class EventsPage implements OnInit {
       this.setDate(date);
       this.dataService.getEvents(true, date)
         .subscribe(events => {
-          console.log(events);
           this.events = events;
           this.setFilteredEvents();
         });

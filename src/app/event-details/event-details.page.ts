@@ -24,10 +24,14 @@ export class EventDetailsPage implements OnInit {
   }
 
   addToFavourites(id: number): void {
-    this.favouritesService.addToFavorites(id);
+    this.favouritesService
+      .addToFavorites(id)
+      .then();
   }
 
   removeFromFavourites(id: number): void {
-    this.favouritesService.removeFromFavourites(id);
+    this.favouritesService
+      .removeFromFavourites(id)
+      .then();
   }
 }

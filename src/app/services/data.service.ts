@@ -6,7 +6,6 @@ import { Storage } from '@ionic/storage';
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { DatePipe } from '@angular/common';
 import { Events } from '../models/events.model';
 import { ConnectionStatus } from '../models/network';
 import { NetworkService } from './network.service';
@@ -20,7 +19,7 @@ const API_AUTH = {'User-Agent': 'SouthEvents'};
 })
 export class DataService {
 
-  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private datePipe: DatePipe) {}
+  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService) {}
 
   filterEvents(events, category, location, date, search): Array<Events> {
     const todayDate = new Date();
@@ -35,8 +34,9 @@ export class DataService {
       event.location.indexOf(location) > -1 &&
       ((futureEvents && new Date(event.date_end) >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
 
-      (event.name.toLowerCase()
-        .indexOf(search.toLowerCase()) > -1
+      (event.name
+          .toLowerCase()
+          .indexOf(search.toLowerCase()) > -1
       ));
   }
 
@@ -57,7 +57,9 @@ export class DataService {
   }
 
   private setLocalData(key: string, data): void {
-    this.storage.set(`${API_STORAGE_KEY}-${key}`, data);
+    this.storage
+      .set(`${API_STORAGE_KEY}-${key}`, data)
+      .then();
   }
 
   private getLocalData(key): Observable<Events> {
