@@ -65,5 +65,4 @@ export class DataService {
   private getLocalData(key): Observable<Events> {
     return from(this.storage.get(`${API_STORAGE_KEY}-${key}`));
   }
-
 }

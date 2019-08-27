@@ -1,4 +1,4 @@
-export interface Events {
+export interface Event {
     id: number;
     name: string;
     event_type: string;
@@ -8,7 +8,7 @@ export interface Events {
     date_end: string;
 }
 
-export interface EventDetails extends Events {
+export interface EventDetails extends Event {
     address: string;
     description: string;
     price: string;
