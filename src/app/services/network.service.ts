@@ -11,7 +11,6 @@ import { ConnectionStatus } from '../models/network';
   providedIn: 'root'
 })
 export class NetworkService {
-
   private status: BehaviorSubject<ConnectionStatus> = new BehaviorSubject(ConnectionStatus.Offline);
 
   constructor(private network: Network, private toastController: ToastController, private plt: Platform) {
@@ -23,7 +22,7 @@ export class NetworkService {
     });
   }
 
-  initializeNetworkEvents(): void {
+  private initializeNetworkEvents(): void {
     this.network.onDisconnect()
       .subscribe(() => {
         if (this.status.getValue() === ConnectionStatus.Online) {
@@ -39,11 +38,11 @@ export class NetworkService {
     });
   }
 
-  onNetworkChange(): Observable<ConnectionStatus> {
+  public onNetworkChange(): Observable<ConnectionStatus> {
     return this.status.asObservable();
   }
 
-  getCurrentNetworkStatus(): ConnectionStatus {
+  public getCurrentNetworkStatus(): ConnectionStatus {
     return this.status.getValue();
   }
 
@@ -51,11 +50,11 @@ export class NetworkService {
     this.status.next(status);
 
     const connection = status === ConnectionStatus.Offline ? 'Offline' : 'Online';
-    const toastController = this.toastController.create({
+    const toast = await this.toastController.create({
       message: `Jesteś teraz ${connection}`,
       duration: 3000,
       position: 'bottom'
     });
-    toastController.then(toast => toast.present());
+    toast.present();
   }
 }

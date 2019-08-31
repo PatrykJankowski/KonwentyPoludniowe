@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
-import { Events } from '../models/events.model';
+import { Event } from '../models/event.model';
 import { DataService } from '../services/data.service';
 import { FavouriteService } from '../services/favourites.service';
 
@@ -14,32 +14,31 @@ import { FavouriteService } from '../services/favourites.service';
   styleUrls: ['events.page.scss']
 })
 export class EventsPage implements OnInit {
-  filteredEvents: Array<Events>;
+  public filteredEvents: Array<Event>;
 
-  private events: Array<Events> = this.route.snapshot.data.events;
+  private events: Array<Event> = this.route.snapshot.data.events;
 
-  private searchField: FormControl;
-  private categoryFilter: FormControl;
-  private locationFilter: FormControl;
-  private dateFilter: FormControl;
+  public searchField: FormControl;
+  public categoryFilter: FormControl;
+  public locationFilter: FormControl;
+  public dateFilter: FormControl;
 
   private category = '';
   private location = '';
   private date = '';
   private searchingTerm = '';
 
-  private categories = [];
-  private locations = [];
-  private dates = [];
+  public categories = [];
+  public locations = [];
+  public dates = [];
 
   constructor(private route: ActivatedRoute,
               private platform: Platform,
               private datePipe: DatePipe,
               private dataService: DataService,
-              private favouritesService: FavouriteService) {}
+              public favouritesService: FavouriteService) {}
 
-  ngOnInit(): void {
-
+  public ngOnInit(): void {
     this.platform.ready()
       .then(() => {
         this.initFilters();
@@ -80,13 +79,13 @@ export class EventsPage implements OnInit {
     });
   }
 
-  ionViewWillEnter(): void {
+  public ionViewWillEnter(): void {
     if (this.favouritesService.getFavouritesOnlyFlag()) {
       this.setFavourites();
     }
   }
 
-  favouritesFilter(): any {
+ private favouritesFilter(): any {
     this.favouritesService.setFavouritesOnlyFlag();
     if (this.favouritesService.getFavouritesOnlyFlag()) {
       this.setFavourites();
@@ -95,7 +94,7 @@ export class EventsPage implements OnInit {
     }
   }
 
-  initFilters(): void {
+  private initFilters(): void {
     if (this.events) {
       for (const event of this.events) {
         const category = event.event_type;
@@ -117,7 +116,7 @@ export class EventsPage implements OnInit {
     }
   }
 
-  addToFavourites(id): void {
+  private ddToFavourites(id): void {
     this.favouritesService.addToFavorites(id)
       .then(() => {
         if (this.favouritesService.getFavouritesOnlyFlag()) {
@@ -126,7 +125,7 @@ export class EventsPage implements OnInit {
       });
   }
 
-  removeFromFavourites(id): void {
+  private removeFromFavourites(id): void {
     this.favouritesService.removeFromFavourites(id)
       .then(() => {
         if (this.favouritesService.getFavouritesOnlyFlag()) {
@@ -135,27 +134,27 @@ export class EventsPage implements OnInit {
       });
   }
 
-  setFilteredEvents(): void {
+  private setFilteredEvents(): void {
     this.filteredEvents = this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
   }
 
-  setFavourites(): void {
+  private setFavourites(): void {
     this.filteredEvents = this.favouritesService.searchFav(this.favouritesService.getFavouritesEvents(this.events), this.searchingTerm);
   }
 
-  setCategory(category): void {
+  private setCategory(category): void {
     this.category = category;
   }
 
-  setLocation(location): void {
+  private setLocation(location): void {
     this.location = location;
   }
 
-  setDate(date): void {
+  private setDate(date): void {
     this.date = date;
   }
 
-  setSearchingTerm(searchingTerm): void {
+  private setSearchingTerm(searchingTerm): void {
     this.searchingTerm = searchingTerm;
   }
 }

@@ -23,7 +23,7 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  initializeApp(): void {
+  private initializeApp(): void {
     this.platform.ready()
       .then(() => {
         this.statusBar.styleDefault();

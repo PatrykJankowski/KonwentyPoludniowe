@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { Events } from '../models/events.model';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Event } from '../models/event.model';
 
 const STORAGE_KEY = 'favoriteEvents';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FavouriteService {
-  favouritesEvents = [];
-  favouritesEventsOnly = false;
+  private favouritesEvents: Array<number> = [];
+  public favouritesEventsOnly: boolean = false;
 
-  constructor(public storage: Storage) {
+  constructor(private storage: NativeStorage) {
     this.getFavoritesEvents()
       .then(favourites => this.favouritesEvents = favourites);
   }
 
-  isFavourite(id: Number): Boolean {
+  public isFavourite(id: Number): Boolean {
     if (!this.favouritesEvents) {
       return false;
     }
@@ -28,7 +30,7 @@ export class FavouriteService {
     return false;
   }
 
-  addToFavorites(eventId: number): Promise<any> {
+  public addToFavorites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
       .then(result => {
         let favourites: Array<number> = result;
@@ -38,46 +40,46 @@ export class FavouriteService {
         favourites.push(eventId);
         this.setFavouritesEvents(favourites);
 
-        return this.storage.set(STORAGE_KEY, favourites);
+        return this.storage.setItem(STORAGE_KEY, favourites);
       });
   }
 
-  removeFromFavourites(eventId: number): Promise<any> {
+  public removeFromFavourites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
       .then(result => {
         const index = result.indexOf(eventId);
         result.splice(index, 1);
         this.setFavouritesEvents(result);
 
-        return this.storage.set(STORAGE_KEY, result);
+        return this.storage.setItem(STORAGE_KEY, result);
       });
   }
 
-  searchFav(events, search): Array<Events> {
-    return events.filter((event: Events) => (
+  public searchFav(events, search): Array<Event> {
+    return events.filter((event: Event) => (
       (event.name.toLowerCase()
         .indexOf(search.toLowerCase()) > -1)));
   }
 
-  setFavouritesOnlyFlag(): void {
+  public setFavouritesOnlyFlag(): void {
     this.favouritesEventsOnly = !this.favouritesEventsOnly;
   }
 
-  setFavouritesEvents(favouritesEvents): void {
+  private setFavouritesEvents(favouritesEvents): void {
     this.favouritesEvents = favouritesEvents;
   }
 
-  getFavouritesEvents(events: Array<Events>): Array<Events> {
-    return events.filter((event: Events) => (
+  public getFavouritesEvents(events: Array<Event>): Array<Event> {
+    return events.filter((event: Event) => (
       this.isFavourite(event.id)
     ));
   }
 
-  getFavoritesEvents(): Promise<Array<number>> {
-    return this.storage.get(STORAGE_KEY);
+  private getFavoritesEvents(): Promise<Array<number>> {
+    return this.storage.getItem(STORAGE_KEY);
   }
 
-  getFavouritesOnlyFlag(): Boolean {
+  public getFavouritesOnlyFlag(): Boolean {
     return this.favouritesEventsOnly;
   }
 

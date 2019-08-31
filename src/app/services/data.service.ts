@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
-import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { Events } from '../models/events.model';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Event } from '../models/event.model';
 import { ConnectionStatus } from '../models/network';
 import { NetworkService } from './network.service';
 
@@ -19,9 +19,9 @@ const API_AUTH = {'User-Agent': 'SouthEvents'};
 })
 export class DataService {
 
-  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService) {}
+  constructor(private nativeHttp: HTTP, private storage: NativeStorage, private networkService: NetworkService) {}
 
-  filterEvents(events, category, location, date, search): Array<Events> {
+  public filterEvents(events, category, location, date, search): Array<Event> {
     const todayDate = new Date();
     let futureEvents = false;
 
@@ -29,7 +29,7 @@ export class DataService {
       futureEvents = true;
     }
 
-    return events.filter((event: Events) => (
+    return events.filter((event: Event) => (
       event.event_type.indexOf(category) > -1 &&
       event.location.indexOf(location) > -1 &&
       ((futureEvents && new Date(event.date_end) >= todayDate) || (!futureEvents && (event.date_begin.includes(date) || event.date_end.includes(date))))) &&
@@ -41,7 +41,7 @@ export class DataService {
   }
 
 // TODO: Zapisac eventsdetails w localstorage
-  getEvents(forceRefresh: Boolean = false, year = ''): Observable<any> {
+  public getEvents(forceRefresh: Boolean = false, year = ''): Observable<any> {
     if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
       return this.getLocalData(`events${year}`);
     }
@@ -51,18 +51,18 @@ export class DataService {
       .pipe(tap(events => this.setLocalData(`events${year}`, events)));
   }
 
-  getEventDetails(id: number): Observable<HTTPResponse> {
+  public getEventDetails(id: number): Observable<HTTPResponse> {
     return from(this.nativeHttp.get(`${API_URL}?id=${id}`, {}, API_AUTH))
       .pipe(map(eventDetails => JSON.parse(eventDetails.data)[0]));
   }
 
   private setLocalData(key: string, data): void {
     this.storage
-      .set(`${API_STORAGE_KEY}-${key}`, data)
+      .setItem(`${API_STORAGE_KEY}-${key}`, data)
       .then();
   }
 
-  private getLocalData(key): Observable<Events> {
-    return from(this.storage.get(`${API_STORAGE_KEY}-${key}`));
+  private getLocalData(key): Observable<any> {
+    return from(this.storage.getItem(`${API_STORAGE_KEY}-${key}`));
   }
 }

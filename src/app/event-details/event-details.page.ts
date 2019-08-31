@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EventDetails } from '../models/events.model';
-import { FavouriteService } from '../services/favourites.service';
 import { GoogleMapOptions } from '@ionic-native/google-maps';
 import { GoogleMap, GoogleMaps, GoogleMapsEvent, Marker } from '@ionic-native/google-maps/ngx';
+import { EventDetails } from '../models/event.model';
+import { FavouriteService } from '../services/favourites.service';
 
 @Component({
   selector: 'ngx-event-details',
@@ -11,11 +11,10 @@ import { GoogleMap, GoogleMaps, GoogleMapsEvent, Marker } from '@ionic-native/go
   styleUrls: ['event-details.page.scss']
 })
 export class EventDetailsPage implements OnInit {
-
-  private eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
+  public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
   private map: GoogleMap;
 
-  constructor(private activatedRoute: ActivatedRoute, private favouritesService: FavouriteService) {}
+  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService) {}
 
   public ngOnInit(): void {
     if (this.eventDetails.description) {
@@ -59,13 +58,13 @@ export class EventDetailsPage implements OnInit {
       });
   }
 
-  addToFavourites(id: number): void {
+  private addToFavourites(id: number): void {
     this.favouritesService
       .addToFavorites(id)
       .then();
   }
 
-  removeFromFavourites(id: number): void {
+  private removeFromFavourites(id: number): void {
     this.favouritesService
       .removeFromFavourites(id)
       .then();

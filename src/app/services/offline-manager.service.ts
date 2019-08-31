@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { ToastController } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
 
 import { forkJoin, from, Observable, of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
@@ -22,10 +22,10 @@ interface StoredRequest {
 })
 export class OfflineManagerService {
 
-  constructor(private storage: Storage, private http: HttpClient, private toastController: ToastController) { }
+  constructor(private storage: NativeStorage, private http: HttpClient, private toastController: ToastController) { }
 
-  checkForEvents(): Observable<any> {
-    return from(this.storage.get(STORAGE_REQ_KEY))
+  public checkForEvents(): Observable<Boolean | Event> {
+    return from(this.storage.getItem(STORAGE_REQ_KEY))
       .pipe(switchMap(storedOperations => {
         const storedObj = JSON.parse(storedOperations);
         if (storedObj && storedObj.length > 0) {
@@ -48,7 +48,7 @@ export class OfflineManagerService {
     );
   }
 
-  sendRequests(operations: Array<StoredRequest>): Observable<any> {
+  private sendRequests(operations: Array<StoredRequest>): Observable<any> {
     const obs = [];
 
     for (const op of operations) {

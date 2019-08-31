@@ -4,13 +4,13 @@ import { NgModule } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 
 import { EventDetailsPage } from './event-details.page';
-import { EventDetailsRouter } from './event-details.router';
+import { EventDetailsRouterModule } from './event-details.router';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
-    EventDetailsRouter
+    EventDetailsRouterModule
   ],
   declarations: [EventDetailsPage]
 })
