@@ -90,8 +90,8 @@
       "cordova-plugin-file": {},
       "cordova-plugin-geolocation": {},
       "cordova-plugin-googlemaps": {
-        "API_KEY_FOR_ANDROID": "AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw",
-        "API_KEY_FOR_IOS": "AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw",
+        "API_KEY_FOR_ANDROID": "",
+        "API_KEY_FOR_IOS": "",
         "PLAY_SERVICES_VERSION": "15.0.1",
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
