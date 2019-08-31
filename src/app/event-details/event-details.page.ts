@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GoogleMapOptions } from '@ionic-native/google-maps';
-import { GoogleMap, GoogleMaps, GoogleMapsEvent, Marker } from '@ionic-native/google-maps/ngx';
+
+import {GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent} from '@ionic-native/google-maps/ngx';
+import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
+
 import { EventDetails } from '../models/event.model';
 import { FavouriteService } from '../services/favourites.service';
 
@@ -14,7 +16,7 @@ export class EventDetailsPage implements OnInit {
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
   private map: GoogleMap;
 
-  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService) {}
+  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder) {}
 
   public ngOnInit(): void {
     if (this.eventDetails.description) {
@@ -23,38 +25,51 @@ export class EventDetailsPage implements OnInit {
     if (this.eventDetails.price) {
       this.eventDetails.price = this.eventDetails.price.replace(/<[^>]*>/g, '');
     }
-  }
-
-  public ionViewDidLoad(): void {
     this.loadMap();
   }
 
   private loadMap(): void {
-    const mapOptions: GoogleMapOptions = {
-      camera: {
-        target: {
-          lat: 43.0741904,
-          lng: -89.3809802
-        },
-        zoom: 18,
-        tilt: 30
-      }
+    const options: NativeGeocoderOptions = {
+      useLocale: true,
+      maxResults: 2
     };
 
-    this.map = GoogleMaps.create('map_canvas', mapOptions);
+    this.nativeGeocoder.forwardGeocode(this.eventDetails.address, options)
+      .then((coordinates: Array<NativeGeocoderResult>) => {
+        const latitude: number = parseFloat(coordinates[0].latitude);
+        const longitude: number = parseFloat(coordinates[0].longitude);
+        
+        const mapOptions: GoogleMapOptions = {
+          camera: {
+            target: {
+              lat: latitude,
+              lng: longitude
+            },
+            zoom: 10,
+            tilt: 30
+          }
+        };
 
-    const marker: Marker = this.map.addMarkerSync({
-      title: 'Ionic',
-      icon: 'blue',
-      animation: 'DROP',
-      position: {
-        lat: 43.0741904,
-        lng: -89.3809802
-      }
-    });
-    marker.on(GoogleMapsEvent.MARKER_CLICK)
-      .subscribe(() => {
-        alert('clicked');
+        this.map = GoogleMaps.create('map', mapOptions);
+        this.createPin(latitude, longitude)
+          .then();
+      })
+      .catch((error: any) => console.log(error));
+  }
+
+  private createPin(latitude: number, longitude: number): Promise<void> {
+    return this.map.one(GoogleMapsEvent.MAP_READY)
+      .then(() => {
+        this.map.addMarker({
+          title: this.eventDetails.name,
+          icon: '#6C5477',
+          animation: 'DROP',
+          position: {
+            lat: latitude,
+            lng: longitude
+          }
+        })
+          .then();
       });
   }
 

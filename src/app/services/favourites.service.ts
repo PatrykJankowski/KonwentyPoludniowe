@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Storage } from '@ionic/storage';
 import { Event } from '../models/event.model';
 
 const STORAGE_KEY = 'favoriteEvents';
@@ -11,7 +11,7 @@ export class FavouriteService {
   private favouritesEvents: Array<number> = [];
   public favouritesEventsOnly: boolean = false;
 
-  constructor(private storage: NativeStorage) {
+  constructor(private storage: Storage) {
     this.getFavoritesEvents()
       .then(favourites => this.favouritesEvents = favourites);
   }
@@ -40,7 +40,7 @@ export class FavouriteService {
         favourites.push(eventId);
         this.setFavouritesEvents(favourites);
 
-        return this.storage.setItem(STORAGE_KEY, favourites);
+        return this.storage.set(STORAGE_KEY, favourites);
       });
   }
 
@@ -51,7 +51,7 @@ export class FavouriteService {
         result.splice(index, 1);
         this.setFavouritesEvents(result);
 
-        return this.storage.setItem(STORAGE_KEY, result);
+        return this.storage.set(STORAGE_KEY, result);
       });
   }
 
@@ -76,7 +76,7 @@ export class FavouriteService {
   }
 
   private getFavoritesEvents(): Promise<Array<number>> {
-    return this.storage.getItem(STORAGE_KEY);
+    return this.storage.get(STORAGE_KEY);
   }
 
   public getFavouritesOnlyFlag(): Boolean {

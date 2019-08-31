@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
+import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Event } from '../models/event.model';
 import { ConnectionStatus } from '../models/network';
 import { NetworkService } from './network.service';
@@ -19,7 +19,7 @@ const API_AUTH = {'User-Agent': 'SouthEvents'};
 })
 export class DataService {
 
-  constructor(private nativeHttp: HTTP, private storage: NativeStorage, private networkService: NetworkService) {}
+  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService) {}
 
   public filterEvents(events, category, location, date, search): Array<Event> {
     const todayDate = new Date();
@@ -58,11 +58,11 @@ export class DataService {
 
   private setLocalData(key: string, data): void {
     this.storage
-      .setItem(`${API_STORAGE_KEY}-${key}`, data)
+      .set(`${API_STORAGE_KEY}-${key}`, data)
       .then();
   }
 
   private getLocalData(key): Observable<any> {
-    return from(this.storage.getItem(`${API_STORAGE_KEY}-${key}`));
+    return from(this.storage.get(`${API_STORAGE_KEY}-${key}`));
   }
 }
