@@ -5,7 +5,7 @@ import { Platform, ToastController } from '@ionic/angular';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import { ConnectionStatus } from '../models/network';
+import { ConnectionStatus } from '@models/network';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +17,17 @@ export class NetworkService {
     this.plt.ready()
       .then(() => {
       this.initializeNetworkEvents();
-      const status = this.network.type !== 'none' ? ConnectionStatus.Online : ConnectionStatus.Offline;
+      const status: ConnectionStatus = this.network.type !== 'none' ? ConnectionStatus.Online : ConnectionStatus.Offline;
       this.status.next(status);
     });
+  }
+
+  public onNetworkChange(): Observable<ConnectionStatus> {
+    return this.status.asObservable();
+  }
+
+  public getCurrentNetworkStatus(): ConnectionStatus {
+    return this.status.getValue();
   }
 
   private initializeNetworkEvents(): void {
@@ -38,18 +46,10 @@ export class NetworkService {
     });
   }
 
-  public onNetworkChange(): Observable<ConnectionStatus> {
-    return this.status.asObservable();
-  }
-
-  public getCurrentNetworkStatus(): ConnectionStatus {
-    return this.status.getValue();
-  }
-
   private async updateNetworkStatus(status: ConnectionStatus): Promise<any> {
     this.status.next(status);
 
-    const connection = status === ConnectionStatus.Offline ? 'Offline' : 'Online';
+    const connection: string = status === ConnectionStatus.Offline ? 'Offline' : 'Online';
     const toast = await this.toastController.create({
       message: `Jesteś teraz ${connection}`,
       duration: 3000,

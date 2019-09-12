@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import {GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent} from '@ionic-native/google-maps/ngx';
+import { GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 
-import { EventDetails } from '../models/event.model';
-import { FavouriteService } from '../services/favourites.service';
+import { EventDetails } from '@models/event.model';
+import { FavouriteService } from '@services/favourites.service';
 
 @Component({
   selector: 'ngx-event-details',

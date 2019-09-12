@@ -1,13 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Storage } from '@ionic/storage';
+import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 import { forkJoin, from, Observable, of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
-
-const STORAGE_REQ_KEY = 'KK-storedreq';
 
 interface StoredRequest {
   url: string;
@@ -21,11 +19,12 @@ interface StoredRequest {
   providedIn: 'root'
 })
 export class OfflineManagerService {
+  private readonly STORAGE_REQ_KEY: string = 'KK-storedreq';
 
-  constructor(private storage: Storage, private http: HttpClient, private toastController: ToastController) { }
+  constructor(private storage: Storage, private http: HTTP, private toastController: ToastController) { }
 
   public checkForEvents(): Observable<Boolean | Event> {
-    return from(this.storage.get(STORAGE_REQ_KEY))
+    return from(this.storage.get(this.STORAGE_REQ_KEY))
       .pipe(switchMap(storedOperations => {
         const storedObj = JSON.parse(storedOperations);
         if (storedObj && storedObj.length > 0) {
@@ -38,7 +37,7 @@ export class OfflineManagerService {
               });
               toastController.then(toast => toast.present());
 
-              this.storage.remove(STORAGE_REQ_KEY);
+              this.storage.remove(this.STORAGE_REQ_KEY);
             })
           );
         }
