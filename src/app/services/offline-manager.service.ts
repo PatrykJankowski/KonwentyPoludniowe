@@ -51,7 +51,7 @@ export class OfflineManagerService {
     const obs = [];
 
     for (const op of operations) {
-      const oneObs = this.http.request(op.type, op.url, op.data);
+      const oneObs = this.http.post(op.type, op.url, op.data);
       obs.push(oneObs);
     }
 

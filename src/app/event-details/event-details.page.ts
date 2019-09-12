@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent } from '@ionic-native/google-maps/ngx';
+// import { GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
 
 import { EventDetails } from '@models/event.model';
@@ -14,7 +14,7 @@ import { FavouriteService } from '@services/favourites.service';
 })
 export class EventDetailsPage implements OnInit {
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
-  private map: GoogleMap;
+  // private map: GoogleMap;
 
   constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder) {}
 
@@ -25,10 +25,10 @@ export class EventDetailsPage implements OnInit {
     if (this.eventDetails.price) {
       this.eventDetails.price = this.eventDetails.price.replace(/<[^>]*>/g, '');
     }
-    this.loadMap();
+    // this.loadMap();
   }
 
-  private loadMap(): void {
+  /*private loadMap(): void {
     const options: NativeGeocoderOptions = {
       useLocale: true,
       maxResults: 2
@@ -71,7 +71,7 @@ export class EventDetailsPage implements OnInit {
         })
           .then();
       });
-  }
+  }*/
 
   private addToFavourites(id: number): void {
     this.favouritesService
