@@ -41,16 +41,17 @@ export class DataService {
 
 // TODO: Zapisac eventsdetails w localstorage
   public getEvents(forceRefresh: Boolean = false, year: string = ''): Observable<any> {
-    console.log('111111');
+    console.log('111111', this.networkService.getCurrentNetworkStatus());
+
     if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
       return this.getLocalData(`events${year}`);
-      console.log('2222222');
     }
-    console.log('33333');
 
     return from(this.nativeHttp.get(`${this.API_URL}?year=${year}`, {}, this.API_AUTH))
-      .pipe(map((events: HTTPResponse) => JSON.parse(events.data)))
-      .pipe(tap((event: Event) => this.setLocalData(`events${year}`, event)));
+      .pipe(
+        map((events: HTTPResponse) => JSON.parse(events.data)),
+        tap((event: Event) => this.setLocalData(`events${year}`, event))
+      );
   }
 
   public getEventDetails(id: number): Observable<HTTPResponse> {
