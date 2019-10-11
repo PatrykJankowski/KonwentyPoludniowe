@@ -26,7 +26,7 @@ export class EventsPage implements OnInit {
   public locations: Array<string> = [];
   public dates: Array<number> = [];
 
-  private events: Array<Event> = this.route.snapshot.data.events;
+  private events: Array<Event> = [];
 
   private category: string = '';
   private location: string = '';
@@ -40,16 +40,15 @@ export class EventsPage implements OnInit {
               public favouritesService: FavouriteService) {}
 
   public ngOnInit(): void {
-    this.platform.ready()
-      .then(() => {
-        this.initFilters();
-        this.setFilteredEvents();
-      });
+    this.events = this.route.snapshot.data.events;
 
     this.searchField = new FormControl();
     this.categoryFilter = new FormControl();
     this.locationFilter = new FormControl();
     this.dateFilter = new FormControl();
+
+    this.initFilters();
+    this.setFilteredEvents();
 
     this.searchField.valueChanges.subscribe((searchingTerm: string) => {
       this.setSearchingTerm(searchingTerm);
@@ -72,7 +71,7 @@ export class EventsPage implements OnInit {
 
     this.dateFilter.valueChanges.subscribe((date: string) => {
       this.setDate(date);
-      this.dataService.getEvents(true, date)
+      this.dataService.getEvents(date)
         .subscribe((events: Array<Event>) => {
           this.events = events;
           this.setFilteredEvents();

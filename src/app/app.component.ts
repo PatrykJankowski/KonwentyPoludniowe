@@ -4,9 +4,9 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Platform } from '@ionic/angular';
 
-import { ConnectionStatus } from './models/network';
-import { NetworkService } from './services/network.service';
-import { OfflineManagerService } from './services/offline-manager.service';
+import { ConnectionStatus } from '@models/network';
+import { NetworkService } from '@services/network.service';
+import { OfflineManagerService } from '@services/offline-manager.service';
 
 @Component({
   selector: 'ngx-root',

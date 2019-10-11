@@ -40,10 +40,11 @@ export class DataService {
   }
 
 // TODO: Zapisac eventsdetails w localstorage
-  public getEvents(forceRefresh: Boolean = false, year: string = ''): Observable<any> {
-    console.log('111111', this.networkService.getCurrentNetworkStatus());
+  public getEvents(year: string = ''): Observable<any> {
 
-    if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline || !forceRefresh) {
+    console.log('isOffline:', this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline);
+
+    if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
       return this.getLocalData(`events${year}`);
     }
 

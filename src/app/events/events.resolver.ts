@@ -10,6 +10,6 @@ export class EventsResolver implements Resolve<any> {
   constructor(private dataService: DataService) {}
 
   public resolve(): any {
-    return this.dataService.getEvents(true);
+    return this.dataService.getEvents('');
   }
 }

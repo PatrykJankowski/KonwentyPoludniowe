@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FavouritesService } from './favourites.service';
+import { FavouriteService } from './favourites.service';
 
 describe('FavouritesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: FavouritesService = TestBed.get(FavouritesService);
+    const service: FavouriteService = TestBed.get(FavouriteService);
     expect(service)
       .toBeTruthy();
   });
