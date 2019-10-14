@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
+import { Network } from '@ionic-native/network/ngx';
 import { Platform } from '@ionic/angular';
 
 import { Event } from '@models/event.model';
@@ -37,6 +38,7 @@ export class EventsPage implements OnInit {
               private platform: Platform,
               private datePipe: DatePipe,
               private dataService: DataService,
+              private network: Network,
               public favouritesService: FavouriteService) {}
 
   public ngOnInit(): void {
@@ -49,6 +51,16 @@ export class EventsPage implements OnInit {
 
     this.initFilters();
     this.setFilteredEvents();
+
+    this.network.onConnect()
+      .subscribe(() => { // todo: destroy?
+        this.dataService.getEvents()
+          .subscribe((events: Array<Event>) => {
+            this.events = events;
+            this.initFilters();
+            this.setFilteredEvents();
+          });
+      });
 
     this.searchField.valueChanges.subscribe((searchingTerm: string) => {
       this.setSearchingTerm(searchingTerm);
@@ -96,17 +108,21 @@ export class EventsPage implements OnInit {
 
   private initFilters(): void {
     if (this.events) {
-      for (const event of this.events) {
+      for (const event of this.events) { // todo: lista kategori, miast itp. z api
         const category: string = event.event_type;
         const location: string = event.location;
         const year: number = parseInt(formatDate(event.date_end, 'yyyy', 'pl'), 10);
 
         if (this.categories.indexOf(category) === -1) { this.categories.push(category); }
         if (this.locations.indexOf(location) === -1) { this.locations.push(location); }
-        if (this.dates.indexOf(year) === -1) { this.dates.push(year); }
+        if (this.dates.indexOf(year) === -1) {
+          this.dates.push(year);
+        }
       }
       const maxDate: number = Math.max(...this.dates);
-      for (let year: number = 2014; year < maxDate; year++) {
+      this.dates = [];
+
+      for (let year: number = 2014; year <= maxDate; year++) {
         this.dates.push(year);
       }
 

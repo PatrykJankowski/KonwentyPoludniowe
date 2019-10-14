@@ -1,3 +1,7 @@
+:host {
+  flex: 1;
+}
+
 .header {
   &__toolbar {
     --padding-top: 0;
@@ -59,7 +63,7 @@
     position: absolute;
     z-index: 3;
     right: -3px;
-    bottom: 17px;
+    bottom: 15px;
     background: #F6F5F7;
   }
 

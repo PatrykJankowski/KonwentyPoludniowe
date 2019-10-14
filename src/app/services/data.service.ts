@@ -4,7 +4,7 @@ import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
 import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 
 import { Event } from '@models/event.model';
 import { ConnectionStatus } from '@models/network';
@@ -21,6 +21,11 @@ export class DataService {
   constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService) {}
 
   public filterEvents(events: Array<Event>, category: string, location: string, date: string, search: string): Array<Event> {
+
+    if (events === null) {
+      return [];
+    }
+
     const todayDate: Date = new Date();
     let futureEvents: boolean = false;
 
@@ -41,17 +46,15 @@ export class DataService {
 
 // TODO: Zapisac eventsdetails w localstorage
   public getEvents(year: string = ''): Observable<any> {
-
-    console.log('isOffline:', this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline);
-
-    if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
-      return this.getLocalData(`events${year}`);
-    }
-
     return from(this.nativeHttp.get(`${this.API_URL}?year=${year}`, {}, this.API_AUTH))
       .pipe(
         map((events: HTTPResponse) => JSON.parse(events.data)),
-        tap((event: Event) => this.setLocalData(`events${year}`, event))
+        tap((event: Event) => this.setLocalData(`events${year}`, event)),
+        catchError(() => {
+          if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
+            return this.getLocalData(`events${year}`); // todo if null then [] zamaist  === null wyzej ?
+          }
+        })
       );
   }
 
