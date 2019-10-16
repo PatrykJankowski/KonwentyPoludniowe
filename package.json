@@ -26,7 +26,6 @@
     "@ionic-native/file": "^5.15.0",
     "@ionic-native/geolocation": "^5.15.0",
     "@ionic-native/http": "^5.15.0",
-    "@ionic-native/native-geocoder": "^5.15.0",
     "@ionic-native/network": "^5.15.0",
     "@ionic-native/splash-screen": "^5.15.0",
     "@ionic-native/status-bar": "^5.15.0",
@@ -64,7 +63,6 @@
     "cordova-plugin-ionic": "^5.4.4",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.1.2",
-    "cordova-plugin-nativegeocoder": "^3.2.2",
     "cordova-plugin-splashscreen": "^5.0.3",
     "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-whitelist": "^1.3.4",
@@ -98,8 +96,7 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-whitelist": {},
       "cordova-sqlite-storage": {},
-      "cordova-plugin-network-information": {},
-      "cordova-plugin-nativegeocoder": {}
+      "cordova-plugin-network-information": {}
     },
     "platforms": [
       "android",

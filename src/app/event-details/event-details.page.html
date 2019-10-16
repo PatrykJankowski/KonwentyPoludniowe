@@ -55,15 +55,19 @@
         </ng-template>
       </a>
 
-      <h4 class="event-details__caption">Cena:</h4>
-      <p>{{ eventDetails.price }}</p>
+      <ng-container *ngIf="eventDetails.price">
+        <h4 class="event-details__caption">Cena:</h4>
+        <p>{{ eventDetails.price }}</p>
+      </ng-container>
 
-      <h4 class="event-details__caption">Opis:</h4>
-      <p>{{ eventDetails.description }}</p>
+      <ng-container *ngIf="eventDetails.description">
+        <h4 class="event-details__caption">Opis:</h4>
+        <p>{{ eventDetails.description }}</p>
+      </ng-container>
 
       <h4 class="event-details__caption">Mapa:</h4>
       <a href="https://www.google.com/maps/search/?api=1&query={{ eventDetails.address }},{{ eventDetails.location }}">
-        <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ latitude }},{{ longitude }}&key={{ apiKey }}">
+        <ion-img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ eventDetails.address }},{{ eventDetails.location }}&key={{ apiKey }}"></ion-img>
       </a>
     </ion-card-content>
   </ion-card>
