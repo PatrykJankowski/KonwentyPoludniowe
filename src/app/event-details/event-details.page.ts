@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-// import { GoogleMap, GoogleMapOptions, GoogleMaps, GoogleMapsEvent } from '@ionic-native/google-maps/ngx';
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
+import { Platform } from '@ionic/angular';
 
 import { EventDetails } from '@models/event.model';
 import { FavouriteService } from '@services/favourites.service';
@@ -13,10 +13,12 @@ import { FavouriteService } from '@services/favourites.service';
   styleUrls: ['event-details.page.scss']
 })
 export class EventDetailsPage implements OnInit {
+  @ViewChild('map', {static: false}) public element: any;
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
-  // private map: GoogleMap;
+  public latitude: number;
+  public longitude: number;
 
-  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder) {}
+  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder, private plt: Platform) {}
 
   public ngOnInit(): void {
     if (this.eventDetails.description) {
@@ -25,53 +27,21 @@ export class EventDetailsPage implements OnInit {
     if (this.eventDetails.price) {
       this.eventDetails.price = this.eventDetails.price.replace(/<[^>]*>/g, '');
     }
-    // this.loadMap();
+    this.setCoordinates();
   }
 
-  /*private loadMap(): void {
+  private setCoordinates(): void {
     const options: NativeGeocoderOptions = {
       useLocale: true,
-      maxResults: 2
+      maxResults: 1
     };
 
     this.nativeGeocoder.forwardGeocode(this.eventDetails.address, options)
       .then((coordinates: Array<NativeGeocoderResult>) => {
-        const latitude: number = parseFloat(coordinates[0].latitude);
-        const longitude: number = parseFloat(coordinates[0].longitude);
-        
-        const mapOptions: GoogleMapOptions = {
-          camera: {
-            target: {
-              lat: latitude,
-              lng: longitude
-            },
-            zoom: 10,
-            tilt: 30
-          }
-        };
-
-        this.map = GoogleMaps.create('map', mapOptions);
-        this.createPin(latitude, longitude)
-          .then();
-      })
-      .catch((error: any) => console.log(error));
-  }
-
-  private createPin(latitude: number, longitude: number): Promise<void> {
-    return this.map.one(GoogleMapsEvent.MAP_READY)
-      .then(() => {
-        this.map.addMarker({
-          title: this.eventDetails.name,
-          icon: '#6C5477',
-          animation: 'DROP',
-          position: {
-            lat: latitude,
-            lng: longitude
-          }
-        })
-          .then();
+        this.latitude = parseFloat(coordinates[0].latitude);
+        this.longitude = parseFloat(coordinates[0].longitude);
       });
-  }*/
+  }
 
   private addToFavourites(id: number): void {
     this.favouritesService

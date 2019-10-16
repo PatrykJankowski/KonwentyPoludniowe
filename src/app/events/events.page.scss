@@ -8,7 +8,7 @@
     --padding-bottom: 0;
     --padding-start: 0;
     --padding-end: 0;
-    --background: #F6F5F7;
+    --background: var(--ion-color-light);
   }
 
   &__title {
@@ -27,11 +27,12 @@
   }
 
   &__col {
-    padding: 5px 0;
+    padding: 5px 0 0;
   }
 
   &__searchbar {
-    --background: #f6f4f7;
+    background: var(--ion-color-light);
+    --background: var(--ion-color-light);
     --padding-start: 0;
     --min-height: 50px;
   }
@@ -50,25 +51,15 @@
 
 .filter {
   width: 100%;
-  height: 100%;
+  height: 44px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: #000;
 
-  &__arrow {
-    width: 10px;
-    height: 8px;
-    position: absolute;
-    z-index: 3;
-    right: -3px;
-    bottom: 15px;
-    background: #F6F5F7;
-  }
-
   &__label {
-    width: 100%;
+    flex: 1;
     --padding-start: 0;
     --padding-end: 0;
 
@@ -89,7 +80,6 @@
     --padding-top: 0;
     --padding-bottom: 0;
     padding: 0;
-    margin-right: -16px;
 
     font-size: 11px;
     font-style: italic;
@@ -112,7 +102,7 @@
 
   &__dots {
     display: flex;
-    margin: 2px 0;
+    margin: 4px 0;
   }
 
   &__dot {
@@ -126,7 +116,8 @@
 }
 
 .event-card {
-  min-height: 120px;
+  display: flex;
+  min-height: 126px;
 
   &__fav {
     position: absolute;
@@ -147,25 +138,28 @@
   }
 
   &__card {
-    margin: 5px 10px;
+    display: flex;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 0;
   }
 
   &__inner {
-    -webkit-padding-start: 5px;
-    padding-inline-start: 5px;
-    -webkit-padding-end: 5px;
-    padding-inline-end: 5px;
-    padding: 5px;
+    -webkit-padding-start: 10px;
+    padding-inline-start: 10px;
+    -webkit-padding-end: 10px;
+    padding-inline-end: 10px;
+    padding: 10px
   }
 
   &__thumb {
-    height: 90px;
+    height: 96px;
     align-self: center;
   }
 
   &__title {
-    margin: 5px 5px 0 5px;
+    margin: 0 0 0 10px;
     font-size: 18px;
     font-weight: 700;
     white-space: nowrap;
@@ -185,8 +179,7 @@
 
     color: #000;
     position: absolute;
-    bottom: -20px;
-    right: 5px;
+    bottom: -25px;
   }
 
   &__thumb, &__category, &__title, &__location {

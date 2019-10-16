@@ -5,8 +5,8 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
-import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -23,8 +23,8 @@ registerLocaleData(localePl);
   imports: [AppRouter, BrowserModule, HttpClientModule, IonicModule.forRoot(), IonicStorageModule.forRoot()],
   providers: [
     DatePipe,
+    Geolocation,
     HTTP,
-    NativeGeocoder,
     Network,
     SplashScreen,
     StatusBar,

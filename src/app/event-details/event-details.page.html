@@ -48,10 +48,12 @@
       </ng-template>
 
       <h4 class="event-details__caption">Adres:</h4>
-      <p *ngIf="eventDetails.address==null; else full_address">{{ eventDetails.location }}</p>
-      <ng-template #full_address>
-        <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
-      </ng-template>
+      <a href="https://google.pl/maps/@{{ latitude }},{{ longitude }}">
+        <p *ngIf="eventDetails.address==null; else full_address">{{ eventDetails.location }}</p>
+        <ng-template #full_address>
+          <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
+        </ng-template>
+      </a>
 
       <h4 class="event-details__caption">Cena:</h4>
       <p>{{ eventDetails.price }}</p>
@@ -59,8 +61,8 @@
       <h4 class="event-details__caption">Opis:</h4>
       <p>{{ eventDetails.description }}</p>
 
-      <!--<h4 class="event-details__caption">Mapa:</h4>
-      <div id="map" class="event-details__map"></div>-->
+      <h4 class="event-details__caption">Mapa:</h4>
+      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ latitude }},{{ longitude }}&key=AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw">
 
     </ion-card-content>
   </ion-card>

@@ -92,6 +92,15 @@ export class EventsPage implements OnInit {
   }
 
   public ionViewWillEnter(): void {
+    // Remove dropdown arrow; hope for better solution in future Ionic version
+    const ionSelects: NodeListOf<HTMLIonSelectElement> = document.querySelectorAll('ion-select');
+    ionSelects.forEach((select: HTMLIonSelectElement) => {
+      select.shadowRoot.querySelectorAll('.select-icon')
+        .forEach((element: HTMLElement) => {
+          element.setAttribute('style', 'display: none');
+        });
+    });
+
     if (this.favouritesService.getFavouritesOnlyFlag()) {
       this.setFavourites();
     }
