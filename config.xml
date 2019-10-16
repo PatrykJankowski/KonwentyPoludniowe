@@ -97,7 +97,6 @@
     </platform>
     <plugin name="cordova-plugin-nativegeocoder" spec="^3.2.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.2" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.6.2" />
     <engine name="android" spec="8.1.0" />
     <engine name="browser" spec="^6.0.0" />
 </widget>

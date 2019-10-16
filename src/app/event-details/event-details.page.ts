@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
-import { Platform } from '@ionic/angular';
 
 import { EventDetails } from '@models/event.model';
 import { FavouriteService } from '@services/favourites.service';
@@ -14,11 +13,13 @@ import { FavouriteService } from '@services/favourites.service';
 })
 export class EventDetailsPage implements OnInit {
   @ViewChild('map', {static: false}) public element: any;
+
+  public readonly apiKey: string = 'AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw';
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
   public latitude: number;
   public longitude: number;
 
-  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder, private plt: Platform) {}
+  constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private nativeGeocoder: NativeGeocoder) {}
 
   public ngOnInit(): void {
     if (this.eventDetails.description) {

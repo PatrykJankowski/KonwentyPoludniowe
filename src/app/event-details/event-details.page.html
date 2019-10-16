@@ -48,10 +48,10 @@
       </ng-template>
 
       <h4 class="event-details__caption">Adres:</h4>
-      <a href="https://google.pl/maps/@{{ latitude }},{{ longitude }}">
-        <p *ngIf="eventDetails.address==null; else full_address">{{ eventDetails.location }}</p>
+      <a class="event-details__link" href="https://www.google.com/maps/search/?api=1&query={{ eventDetails.address }},{{ eventDetails.location }}">
+        <ng-container *ngIf="eventDetails.address==null; else full_address">{{ eventDetails.location }} <ion-icon name="exit"></ion-icon></ng-container>
         <ng-template #full_address>
-          <p>{{ eventDetails.address }}, {{ eventDetails.location }}</p>
+          <ng-container>{{ eventDetails.address }}, {{ eventDetails.location }} <ion-icon name="exit"></ion-icon></ng-container>
         </ng-template>
       </a>
 
@@ -62,8 +62,9 @@
       <p>{{ eventDetails.description }}</p>
 
       <h4 class="event-details__caption">Mapa:</h4>
-      <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ latitude }},{{ longitude }}&key=AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw">
-
+      <a href="https://www.google.com/maps/search/?api=1&query={{ eventDetails.address }},{{ eventDetails.location }}">
+        <img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ latitude }},{{ longitude }}&key={{ apiKey }}">
+      </a>
     </ion-card-content>
   </ion-card>
 </ion-content>
