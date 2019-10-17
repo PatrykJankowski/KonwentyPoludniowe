@@ -12,7 +12,7 @@ import { FavouriteService } from '@services/favourites.service';
 export class EventDetailsPage implements OnInit {
   @ViewChild('map', {static: false}) public element: any;
 
-  public readonly apiKey: string = 'xxx';
+  public readonly apiKey: string = 'AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw';
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
 
   constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService) {}

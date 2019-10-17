@@ -154,13 +154,17 @@
     padding: 10px
   }
 
+  &__description {
+    padding-left: 10px;
+  }
+
   &__thumb {
     height: 96px;
     align-self: center;
   }
 
   &__title {
-    margin: 0 0 0 10px;
+    margin: 0;
     font-size: 18px;
     font-weight: 700;
     white-space: nowrap;
