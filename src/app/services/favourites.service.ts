@@ -34,7 +34,7 @@ export class FavouriteService {
 
   public addToFavorites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
-      .then(result => {
+      .then((result: Array<number>) => {
         let favourites: Array<number> = result;
         if (!favourites) {
           favourites = [];
@@ -48,7 +48,7 @@ export class FavouriteService {
 
   public removeFromFavourites(eventId: number): Promise<any> {
     return this.getFavoritesEvents()
-      .then(result => {
+      .then((result: Array<number>) => {
         const index: number = result.indexOf(eventId);
         result.splice(index, 1);
         this.setFavouritesEvents(result);
