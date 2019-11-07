@@ -27,6 +27,9 @@
 }
 
 .event-details {
+  p {
+    text-align: justify;
+  }
 
   &__card, &__header {
     border-radius: 0;
@@ -79,8 +82,9 @@
   }
 
   &__caption {
-    margin: 10px 0 0;
+    margin: 14px 0 0;
     font-family: "Khand", serif;
+    font-size: 15px;
     font-weight: 600;
   }
 

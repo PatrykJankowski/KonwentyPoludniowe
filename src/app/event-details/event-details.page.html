@@ -57,12 +57,12 @@
 
       <ng-container *ngIf="eventDetails.price">
         <h4 class="event-details__caption">Cena:</h4>
-        <p>{{ eventDetails.price }}</p>
+        <div [outerHTML]="eventDetails.price"></div>
       </ng-container>
 
       <ng-container *ngIf="eventDetails.description">
         <h4 class="event-details__caption">Opis:</h4>
-        <p>{{ eventDetails.description }}</p>
+        <div [outerHTML]="eventDetails.description"></div>
       </ng-container>
 
       <h4 class="event-details__caption">Mapa:</h4>

@@ -9,22 +9,13 @@ import { FavouriteService } from '@services/favourites.service';
   templateUrl: 'event-details.page.html',
   styleUrls: ['event-details.page.scss']
 })
-export class EventDetailsPage implements OnInit {
+export class EventDetailsPage {
   @ViewChild('map', {static: false}) public element: any;
 
-  public readonly apiKey: string = 'xxx';
+  public readonly apiKey: string = 'xxx'; // todo: brac z configa
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
 
   constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService) {}
-
-  public ngOnInit(): void {
-    if (this.eventDetails.description) {
-      this.eventDetails.description = this.eventDetails.description.replace(/<[^>]*>/g, '');
-    }
-    if (this.eventDetails.price) {
-      this.eventDetails.price = this.eventDetails.price.replace(/<[^>]*>/g, '');
-    }
-  }
 
   private addToFavourites(id: number): void {
     this.favouritesService

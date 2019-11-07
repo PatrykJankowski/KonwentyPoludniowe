@@ -9,7 +9,7 @@ import { DataService } from '@services/data.service';
 export class EventDetailsResolver implements Resolve<any> {
   constructor(private dataService: DataService) {}
 
-  resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): any {
+  public resolve(activatedRouteSnapshot: ActivatedRouteSnapshot): any {
     return this.dataService.getEventDetails(activatedRouteSnapshot.params.id);
   }
 }
