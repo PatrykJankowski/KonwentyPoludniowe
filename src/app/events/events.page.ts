@@ -106,6 +106,10 @@ export class EventsPage implements OnInit {
     }
   }
 
+  public loadDefaultImage(event): void {
+    event.target.src = '/assets/no-image.jpg';
+  }
+
   private favouritesFilter(): any {
     this.favouritesService.setFavouritesOnlyFlag();
     if (this.favouritesService.getFavouritesOnlyFlag()) {

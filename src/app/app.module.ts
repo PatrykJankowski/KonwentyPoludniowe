@@ -5,6 +5,7 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
+import { Calendar } from '@ionic-native/calendar/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -28,6 +29,7 @@ registerLocaleData(localePl);
     Network,
     SplashScreen,
     StatusBar,
+    Calendar,
     { provide: LOCALE_ID, useValue: 'pl' },
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

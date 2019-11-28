@@ -16,7 +16,7 @@
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-thumbnail class="event-details__thumb">
-            <ion-img [src]="eventDetails.image" alt="Image - {{eventDetails.name}}"></ion-img>
+            <ion-img [src]="eventDetails.image" (ionError)="loadDefaultImage($event)" alt="Image - {{eventDetails.name}}"></ion-img>
           </ion-thumbnail>
         </ion-row>
       </ion-grid>
@@ -26,6 +26,7 @@
   <ion-card class="event-details__card">
     <ion-card-content>
       <div class="event-details__icons">
+        <ion-icon (click)="addToCalendar()" name="alarm" class="event-details__icon"></ion-icon>
         <a *ngIf="eventDetails.www_url" href="{{ eventDetails.www_url }}"><ion-icon name="globe" class="event-details__icon"></ion-icon></a>
         <a *ngIf="eventDetails.event_url" href="{{ eventDetails.event_url }}"><ion-icon name="calendar" class="event-details__icon"></ion-icon></a>
         <a *ngIf="eventDetails.fb_url" href="{{ eventDetails.fb_url }}"><ion-icon name="logo-facebook" class="event-details__icon"></ion-icon></a>
