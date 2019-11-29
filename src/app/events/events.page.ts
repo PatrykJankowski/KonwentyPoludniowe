@@ -1,10 +1,10 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { Network } from '@ionic-native/network/ngx';
-import { Platform } from '@ionic/angular';
+import { IonInfiniteScroll, Platform } from '@ionic/angular';
 
 import { Event } from '@models/event.model';
 import { DataService } from '@services/data.service';
@@ -26,6 +26,8 @@ export class EventsPage implements OnInit {
   public categories: Array<string> = [];
   public locations: Array<string> = [];
   public dates: Array<number> = [];
+
+  public infinitiveScrollItems: Array<Event> = [];
 
   private events: Array<Event> = [];
 
@@ -106,6 +108,35 @@ export class EventsPage implements OnInit {
     }
   }
 
+  public loadData(event): void {
+    const infinitiveScrollItemsLength: number = this.infinitiveScrollItems.length;
+    let infinitiveScrollItemsMaxLength: number = infinitiveScrollItemsLength + 5;
+
+    if (infinitiveScrollItemsLength < this.filteredEvents.length) {
+
+      if (event.target.disabled) {
+        event.target.disabled = false;
+      }
+
+      if (infinitiveScrollItemsMaxLength > this.filteredEvents.length) {
+        infinitiveScrollItemsMaxLength = this.filteredEvents.length;
+      }
+
+      setTimeout(() => {
+        for (let i: number = infinitiveScrollItemsLength; i < infinitiveScrollItemsMaxLength; i++) {
+          this.infinitiveScrollItems.push(this.filteredEvents[i]);
+        }
+        event.target.complete();
+      }, 500);
+    } else {
+      event.target.disabled = true;
+    }
+  }
+
+  public loadImage(event, image): void {
+    event.target.src = image;
+  }
+
   public loadDefaultImage(event): void {
     event.target.src = '/assets/no-image.jpg';
   }
@@ -165,10 +196,22 @@ export class EventsPage implements OnInit {
 
   private setFilteredEvents(): void {
     this.filteredEvents = this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
+
+    const infinitiveScrollItemsLength: number = this.infinitiveScrollItems.length;
+    let infinitiveScrollItemsMaxLength: number = infinitiveScrollItemsLength + 5;
+
+    this.infinitiveScrollItems = [];
+    for (let i: number = 0; i < 5; i++) {
+      this.infinitiveScrollItems.push(this.filteredEvents[i]);
+    }
   }
 
-  private setFavourites(): void {
+  private setFavourites(): void { //todo inf scroll items
     this.filteredEvents = this.favouritesService.searchFav(this.favouritesService.getFavouritesEvents(this.events), this.searchingTerm);
+    this.infinitiveScrollItems = [];
+    for (let i: number = 0; i < 5; i++) {
+      this.infinitiveScrollItems.push(this.filteredEvents[i]);
+    }
   }
 
   private setCategory(category: string): void {

@@ -77,9 +77,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-virtual-scroll [items]="filteredEvents" approxItemHeight="120px">
 
-  <div class="event-card" *virtualItem="let event">
+  <div class="event-card" *ngFor="let event of infinitiveScrollItems">
 
     <ion-button fill="clear" class="event-card__fav" (click)="addToFavourites(event.id)" *ngIf="!favouritesService.isFavourite(event.id)" >
       <ion-icon name="star-outline" slot="icon-only" class="event-card__icon"></ion-icon>
@@ -119,5 +118,7 @@
     </ion-card>
   </div>
 
-  </ion-virtual-scroll>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

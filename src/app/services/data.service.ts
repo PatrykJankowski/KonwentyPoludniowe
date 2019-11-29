@@ -5,11 +5,12 @@ import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 
 import { Event } from '@models/event.model';
 import { ConnectionStatus } from '@models/network';
 import { NetworkService } from '@services/network.service';
+import {Platform} from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +54,8 @@ export class DataService {
           .pipe(
             map((events: HTTPResponse) => JSON.parse(events.data)),
             tap((event: Event) => this.setLocalData(`events${year}`, event)),
-            catchError(() => {
+            catchError((e) => {
+              console.log('eeeeeee');
               if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
                 return this.getLocalData(`events${year}`); // todo if null then [] zamaist  === null wyzej ?
               }
