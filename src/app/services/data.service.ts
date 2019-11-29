@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { HTTP, HTTPResponse } from '@ionic-native/http/ngx';
+import { Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 import { from, Observable } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
 import { Event } from '@models/event.model';
 import { ConnectionStatus } from '@models/network';
@@ -18,7 +19,7 @@ export class DataService {
   private readonly API_URL: string = 'https://konwenty-poludniowe.pl/events_app.php';
   private readonly API_AUTH: object = {'User-Agent': 'SouthEvents'};
 
-  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService) {}
+  constructor(private nativeHttp: HTTP, private storage: Storage, private networkService: NetworkService, private platform: Platform) {}
 
   public filterEvents(events: Array<Event>, category: string, location: string, date: string, search: string): Array<Event> {
 
@@ -46,16 +47,19 @@ export class DataService {
 
 // TODO: Zapisac eventsdetails w localstorage
   public getEvents(year: string = ''): Observable<any> {
-    return from(this.nativeHttp.get(`${this.API_URL}?year=${year}`, {}, this.API_AUTH))
-      .pipe(
-        map((events: HTTPResponse) => JSON.parse(events.data)),
-        tap((event: Event) => this.setLocalData(`events${year}`, event)),
-        catchError(() => {
-          if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
-            return this.getLocalData(`events${year}`); // todo if null then [] zamaist  === null wyzej ?
-          }
-        })
-      );
+    return from(this.platform.ready())
+      .pipe(mergeMap(() => {
+        return from(this.nativeHttp.get(`${this.API_URL}?year=${year}`, {}, this.API_AUTH))
+          .pipe(
+            map((events: HTTPResponse) => JSON.parse(events.data)),
+            tap((event: Event) => this.setLocalData(`events${year}`, event)),
+            catchError(() => {
+              if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
+                return this.getLocalData(`events${year}`); // todo if null then [] zamaist  === null wyzej ?
+              }
+            })
+          );
+      }));
   }
 
   public getEventDetails(id: number): Observable<HTTPResponse> {

@@ -27,7 +27,6 @@ export class AppComponent {
     this.platform.ready()
       .then(() => {
         this.statusBar.styleDefault();
-        this.splashScreen.hide();
         this.networkService.onNetworkChange()
           .subscribe((status: ConnectionStatus) => {
             if (status === ConnectionStatus.Online) {
@@ -35,6 +34,7 @@ export class AppComponent {
               .subscribe();
             }
           });
+        this.splashScreen.hide();
       });
   }
 }
