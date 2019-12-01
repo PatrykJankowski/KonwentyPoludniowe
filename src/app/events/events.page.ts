@@ -54,7 +54,7 @@ export class EventsPage implements OnInit {
 
     this.network.onConnect()
       .subscribe(() => { // todo: destroy?
-        this.dataService.getEvents()
+        this.dataService.getEvents(this.date)
           .subscribe((events: Array<Event>) => {
             this.events = events;
             this.initFilters();
