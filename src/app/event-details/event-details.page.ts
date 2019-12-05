@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { Calendar } from '@ionic-native/calendar/ngx';
+import {Calendar} from '@ionic-native/calendar/ngx';
 
-import { EventDetails } from '@models/event.model';
-import { FavouriteService } from '@services/favourites.service';
+import {EventDetails} from '@models/event.model';
+import {FavouriteService} from '@services/favourites.service';
 
 @Component({
   selector: 'ngx-event-details',
   templateUrl: 'event-details.page.html',
-  styleUrls: ['event-details.page.scss']
+  styleUrls: ['event-details.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventDetailsPage {
   public readonly apiKey: string = ''; // todo: brac z configa

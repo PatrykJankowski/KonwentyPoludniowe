@@ -115,12 +115,14 @@
   }
 }
 
-.scroll {
-  margin: 5px 0;
+.content {
+  --padding-top: 5px;
+  --padding-bottom: 5px;
 }
 
 .event-card {
   display: flex;
+  position: relative;
   min-height: 126px;
 
   &__fav {

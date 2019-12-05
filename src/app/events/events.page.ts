@@ -1,10 +1,10 @@
 import { DatePipe, formatDate } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { Network } from '@ionic-native/network/ngx';
-import { Platform } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, Platform } from '@ionic/angular';
 
 import { Event } from '@models/event.model';
 import { DataService } from '@services/data.service';
@@ -13,10 +13,16 @@ import { FavouriteService } from '@services/favourites.service';
 @Component({
   selector: 'ngx-home',
   templateUrl: 'events.page.html',
-  styleUrls: ['events.page.scss']
+  styleUrls: ['events.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventsPage implements OnInit {
+  @ViewChild(IonInfiniteScroll) public infiniteScroll: IonInfiniteScroll;
+  @ViewChild(IonContent) public content: IonContent;
+
   public filteredEvents: Array<Event>;
+  public infinitiveScrollFilteredEvents: Array<Event> = [];
+  public infinitiveScrollMaxNoEvents: number = 5;
 
   public searchField: FormControl;
   public categoryFilter: FormControl;
@@ -106,8 +112,36 @@ export class EventsPage implements OnInit {
     }
   }
 
+  public loadData(event: any): void {
+    const length: number = this.infinitiveScrollFilteredEvents.length;
+
+    console.log('length', length, 'this.infinitiveScrollMaxNoEvents', this.infinitiveScrollMaxNoEvents);
+
+    if ((length + 5) <= this.filteredEvents.length) {
+      this.infinitiveScrollMaxNoEvents = length + 5;
+    } else {
+      this.infinitiveScrollMaxNoEvents = this.filteredEvents.length;
+    }
+
+    for (let i: number = length; i < this.infinitiveScrollMaxNoEvents; i++) {
+      this.infinitiveScrollFilteredEvents.push(this.filteredEvents[i]);
+    }
+
+    console.log(this.infinitiveScrollFilteredEvents);
+
+    event.target.complete();
+
+    if (length >= this.filteredEvents.length) {
+      event.target.disabled = true;
+    }
+  }
+
   public loadDefaultImage(event): void {
     event.target.src = '/assets/no-image.jpg';
+  }
+
+  public trackById(index: number, event: Event): number {
+    return event.id;
   }
 
   private favouritesFilter(): any {
@@ -135,13 +169,12 @@ export class EventsPage implements OnInit {
       const maxDate: number = Math.max(...this.dates);
       this.dates = [];
 
-      for (let year: number = 2014; year <= maxDate; year++) {
+      for (let year: number = maxDate; year >= 2014; year--) {
         this.dates.push(year);
       }
 
       this.categories.sort();
       this.locations.sort();
-      this.dates.sort();
     }
   }
 
@@ -165,10 +198,39 @@ export class EventsPage implements OnInit {
 
   private setFilteredEvents(): void {
     this.filteredEvents = this.dataService.filterEvents(this.events, this.category, this.location, this.date, this.searchingTerm);
+
+    if (this.favouritesService.favouritesEventsOnly) {
+      this.setFavourites();
+    }
+
+    if (this.infiniteScroll && this.filteredEvents.length > 5) {
+      this.infiniteScroll.disabled = false;
+    }
+
+    if (this.infiniteScroll) {
+      console.log(this.infiniteScroll.disabled);
+    }
+
+    this.infinitiveScrollFilteredEvents = [];
+    this.infinitiveScrollMaxNoEvents = 5;
+
+    let length: number = 5;
+    if (length > this.filteredEvents.length) {
+      length = this.filteredEvents.length;
+    }
+
+    for (let i: number = 0; i < length; i++) {
+      this.infinitiveScrollFilteredEvents.push(this.filteredEvents[i]);
+    }
+
+    if (this.content) {
+      this.content.scrollToTop();
+    }
   }
 
   private setFavourites(): void {
     this.filteredEvents = this.favouritesService.searchFav(this.favouritesService.getFavouritesEvents(this.events), this.searchingTerm);
+    this.infinitiveScrollFilteredEvents = this.filteredEvents;
   }
 
   private setCategory(category: string): void {
