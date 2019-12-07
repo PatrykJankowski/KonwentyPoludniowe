@@ -135,13 +135,12 @@ export class EventsPage implements OnInit {
       const maxDate: number = Math.max(...this.dates);
       this.dates = [];
 
-      for (let year: number = 2014; year <= maxDate; year++) {
+      for (let year: number = maxDate; year >= 2014; year--) {
         this.dates.push(year);
       }
 
       this.categories.sort();
       this.locations.sort();
-      this.dates.sort();
     }
   }
 
