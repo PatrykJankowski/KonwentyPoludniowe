@@ -14,6 +14,7 @@ import { FavouriteService } from '@services/favourites.service';
 export class EventDetailsPage {
   public readonly apiKey: string = 'AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw'; // todo: brac z configa
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
+  public offlineText: string = 'Brak danych dla wersji offline';
 
   constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private calendar: Calendar) {}
 

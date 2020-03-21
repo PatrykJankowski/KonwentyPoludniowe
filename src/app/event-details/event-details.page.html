@@ -12,11 +12,11 @@
     <ion-card-content class="event-details__inner">
       <ion-grid>
         <ion-row>
-          <ion-card-title class="event-details__title">{{ eventDetails.name }}</ion-card-title>
+          <ion-card-title class="event-details__title">{{ eventDetails ? eventDetails.name : offlineText }}</ion-card-title>
         </ion-row>
         <ion-row class="ion-align-items-center">
           <ion-thumbnail class="event-details__thumb">
-            <ion-img [src]="eventDetails.image" (ionError)="loadDefaultImage($event)" alt="Image - {{eventDetails.name}}"></ion-img>
+            <ion-img [src]="eventDetails ? eventDetails.image : 'no-image'" (ionError)="loadDefaultImage($event)" alt="Obrazek - {{ eventDetails ? eventDetails.name : offlineText }}"></ion-img>
           </ion-thumbnail>
         </ion-row>
       </ion-grid>
@@ -24,7 +24,7 @@
   </ion-card>
 
   <ion-card class="event-details__card">
-    <ion-card-content>
+    <ion-card-content *ngIf="eventDetails">
       <div class="event-details__icons">
         <ion-icon (click)="addToCalendar()" name="alarm" class="event-details__icon"></ion-icon>
         <a *ngIf="eventDetails.www_url" href="{{ eventDetails.www_url }}"><ion-icon name="globe" class="event-details__icon"></ion-icon></a>
@@ -40,7 +40,7 @@
       </div>
 
       <h4 class="event-details__caption">Konwencja:</h4>
-      <p>{{ eventDetails.event_type }}</p>
+      <p>{{ eventDetails ? eventDetails.event_type : offlineText }}</p>
 
       <h4 class="event-details__caption">Data:</h4>
       <p *ngIf="eventDetails.date_end == eventDetails.date_begin; else date_end">{{ eventDetails.date_begin }}</p>

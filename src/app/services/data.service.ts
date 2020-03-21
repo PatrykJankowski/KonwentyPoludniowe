@@ -45,7 +45,6 @@ export class DataService {
       ));
   }
 
-// TODO: Zapisac eventsdetails w localstorage
   public getEvents(year: string = ''): Observable<any> {
     return from(this.platform.ready())
       .pipe(mergeMap(() => {
@@ -63,8 +62,19 @@ export class DataService {
   }
 
   public getEventDetails(id: number): Observable<HTTPResponse> {
-    return from(this.nativeHttp.get(`${this.API_URL}?id=${id}`, {}, this.API_AUTH))
-      .pipe(map((eventDetails: HTTPResponse) => JSON.parse(eventDetails.data)[0]));
+    return from(this.platform.ready())
+      .pipe(mergeMap(() => {
+        return from(this.nativeHttp.get(`${this.API_URL}?id=${id}`, {}, this.API_AUTH))
+        .pipe(
+          map((eventDetails: HTTPResponse) => JSON.parse(eventDetails.data)[0]),
+          tap((event: Event) => this.setLocalData(`event-details-${id}`, event)),
+          catchError(() => {
+            if (this.networkService.getCurrentNetworkStatus() === ConnectionStatus.Offline) {
+              return this.getLocalData(`event-details-${id}`); // todo if null then [] zamaist  === null wyzej ?
+            }
+          })
+        );
+      }));
   }
 
   private setLocalData(key: string, data: Event): void {
