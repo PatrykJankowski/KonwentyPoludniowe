@@ -81,6 +81,9 @@
 
   <div class="event-card" *virtualItem="let event">
 
+    <!-- <cdk-virtual-scroll-viewport class="scroll" [itemSize]="filteredEvents.length" minBufferPx="500" maxBufferPx="1000" style="height: 100%">
+    <div class="event-card" *cdkVirtualFor="let event of filteredEvents; let i = index">-->
+
     <ion-button fill="clear" class="event-card__fav" (click)="addToFavourites(event.id)" *ngIf="!favouritesService.isFavourite(event.id)" >
       <ion-icon name="star-outline" slot="icon-only" class="event-card__icon"></ion-icon>
     </ion-button>

@@ -66,12 +66,12 @@
         <div [outerHTML]="eventDetails.description"></div>
       </ng-container>
 
-      <ng-container *ngIf="eventDetails.address">
+      <!--<ng-container *ngIf="eventDetails.address">
         <h4 class="event-details__caption">Mapa:</h4>
         <a href="https://www.google.com/maps/search/?api=1&query={{ eventDetails.address }},{{ eventDetails.location }}">
           <ion-img src="https://maps.googleapis.com/maps/api/staticmap?center={{ eventDetails.address }},{{ eventDetails.location }}&zoom=18&size=600x600&maptype=roadmap&markers=color:purple%7C{{ eventDetails.address }},{{ eventDetails.location }}&key={{ apiKey }}"></ion-img>
         </a>
-      </ng-container>
+      </ng-container>-->
     </ion-card-content>
   </ion-card>
 </ion-content>

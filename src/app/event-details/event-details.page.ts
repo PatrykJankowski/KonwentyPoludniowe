@@ -12,7 +12,7 @@ import { FavouriteService } from '@services/favourites.service';
   styleUrls: ['event-details.page.scss']
 })
 export class EventDetailsPage {
-  public readonly apiKey: string = ''; // todo: brac z configa
+  public readonly apiKey: string = 'AIzaSyABDqSFgbPT0iBn80-MJPFm5GmUiI38pFw'; // todo: brac z configa
   public eventDetails: EventDetails = this.activatedRoute.snapshot.data.eventDetails;
 
   constructor(private activatedRoute: ActivatedRoute, public favouritesService: FavouriteService, private calendar: Calendar) {}

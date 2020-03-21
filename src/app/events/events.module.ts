@@ -12,7 +12,8 @@ import { EventsRouterModule } from './events.router';
     IonicModule,
     CommonModule,
     EventsRouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    // ScrollingModule
   ],
   declarations: [EventsPage]
 })
